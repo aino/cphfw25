@@ -1,4 +1,4 @@
-export const locales = ['en', 'sv']
+export const locales = ['en']
 
 export const routes = {
   '/': {

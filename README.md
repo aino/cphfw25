@@ -155,7 +155,7 @@ export default function () {
 Use `img` to dynamically generate `src` and `srcset` attributes based on images in the `public` folder:
 
 ```hbs
-<img {{img 'about/about1.jpg'}} alt='About Aino' />
+<img {{img '/images/about/about1.jpg'}} alt='About Aino' />
 ```
 
 This generates (in production):
@@ -169,6 +169,14 @@ This generates (in production):
   alt="About Aino"
 />
 ```
+
+You can also use external images:
+
+```hbs
+<img {{img 'https://domain.com/image.jpg'}} width='100' height='100' />
+```
+
+**Note:** When using external images, you need to add `remotePatterns` to the vercelConfig.js file to allow it to be fetched and rescaled. You also need to add width and height manually since we cannot prefetch metadata for external images.
 
 In development we use `sharp` to mimic the same rescaling principle as on Vercel.
 

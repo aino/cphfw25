@@ -4,8 +4,10 @@
   color-scheme: light dark;
 
   --white-rgb: 255, 255, 255;
-  --black-rgb: 0, 0, 0;
+  --black-rgb: 24, 24, 24;
+  --lime-rgb: 193, 220, 67;
 
+  --lime: rgb(var(--lime-rgb));
   --black: rgb(var(--black-rgb));
   --white: rgb(var(--white-rgb));
 }
@@ -19,9 +21,15 @@
 
 html {
   font-family: helvetica, sans-serif;
-  color: var(--black);
-  background: var(--white);
+  color: var(--lime);
+  background: var(--black);
   font-size: calc(62.5% * var(--n));
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -33,7 +41,34 @@ body {
   font-size: 1.6rem;
 }
 
-#app {
-  background: var(--white);
+#site {
+  background: var(--black);
   min-height: 100vh;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+
+button {
+  height: 4.8rem;
+  border-radius: 0.4rem;
+  color: var(--lime);
+  background: rgba(33, 33, 32, 0.5);
+  backdrop-filter: blur(26px);
+  padding: 0 2rem;
+}
+
+.barcontainer {
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+  top: calc(100vh / 2 - 2.4rem);
+  left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.4rem;
 }
