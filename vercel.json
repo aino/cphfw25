@@ -15,6 +15,12 @@
       1280,
       1600,
       1920
+    ],
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "static.bonniernews.se"
+      }
     ]
   },
   "routes": [
