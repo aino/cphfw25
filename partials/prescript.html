@@ -1,0 +1,22 @@
+<script type="text/javascript">
+  ;((html) => {
+    const breakpoint = 1400
+    html.classList.add('js')
+    const setVariables = () => {
+      const width = innerWidth
+      let n = 1
+      if (width < 375) {
+        n = width / 375
+      } else if (width > breakpoint) {
+        n += ((width - breakpoint) * 0.5) / breakpoint
+      }
+      html.style = Object.entries({ n })
+        .map(([key, value]) => `--${key}:${value}`)
+        .join(';')
+    }
+    setVariables()
+    const resizeEvent =
+      'ontouchstart' in window ? 'orientationchange' : 'resize'
+    addEventListener(resizeEvent, setVariables)
+  })(document.documentElement)
+</script>

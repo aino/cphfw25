@@ -1,0 +1,39 @@
+@import 'reset.css';
+
+:root {
+  color-scheme: light dark;
+
+  --white-rgb: 255, 255, 255;
+  --black-rgb: 0, 0, 0;
+
+  --black: rgb(var(--black-rgb));
+  --white: rgb(var(--white-rgb));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: rgb(var(--black-rgb));
+    --black: rgb(var(--white-rgb));
+  }
+}
+
+html {
+  font-family: helvetica, sans-serif;
+  color: var(--black);
+  background: var(--white);
+  font-size: calc(62.5% * var(--n));
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.6rem;
+}
+
+#app {
+  background: var(--white);
+  min-height: 100vh;
+}
