@@ -48,7 +48,7 @@ export function create(tag, attributes, parent) {
 export function createFromString(html, parent) {
   const template = document.createElement('template')
   template.innerHTML = html
-  const element = template.content.firstChild
+  const element = template.content.children[0]
   if (parent) {
     parent.appendChild(element)
   }

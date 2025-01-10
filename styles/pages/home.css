@@ -1,0 +1,181 @@
+body.home {
+  .hero {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background: var(--black);
+    img,
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+    }
+    .fader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(var(--black-rgb), 1);
+      mix-blend-mode: color-burn;
+      z-index: 2;
+      transition: background-color 1s ease-out;
+      &.fade {
+        background: rgba(var(--black-rgb), 0.5);
+      }
+    }
+  }
+
+  .loadercontainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20rem;
+    height: 11rem;
+    z-index: 3;
+    transition: opacity 0.5s cubic-bezier(0.32, 0, 0.67, 0),
+      top 0.5s cubic-bezier(0.32, 0, 0.67, 0);
+    .progress {
+      position: absolute;
+      bottom: 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    &.fadeout {
+      opacity: 0;
+    }
+  }
+
+  .loader {
+    position: absolute;
+    width: 100%;
+    width: 10rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 10rem;
+    --dash: 180;
+    --line-width: 11%;
+    flex: 0 0 20rem;
+    z-index: 3;
+  }
+
+  .circle {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .circle circle {
+    fill: none;
+    stroke: var(--lime);
+    stroke-width: var(--line-width);
+    stroke-dasharray: var(--dash);
+    stroke-dashoffset: var(--dash);
+    animation: draw-circle 2.3s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+  }
+
+  .line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--line-width);
+    height: 100%;
+    background-color: var(--lime);
+    transform-origin: top center;
+    transform: translate(-50%, -50%) scaleY(0);
+    animation: trim-line 2.3s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+  }
+
+  .loadercontainer.pause {
+    .line,
+    .circle circle {
+      animation-play-state: paused;
+    }
+  }
+}
+/*
+@keyframes draw-circle {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  25% {
+    stroke-dashoffset: var(--dash);
+  }
+  50% {
+    stroke-dashoffset: var(--dash);
+  }
+  75% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes trim-line {
+  0% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+  30% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+  45% {
+    transform: translate(-50%, -50%) scaleY(0);
+  }
+  78% {
+    transform: translate(-50%, -50%) scaleY(0);
+  }
+  95% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+}
+
+*/
+
+@keyframes draw-circle {
+  0% {
+    stroke-dashoffset: var(--dash);
+  }
+  25% {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  75% {
+    stroke-dashoffset: var(--dash);
+  }
+  100% {
+    stroke-dashoffset: var(--dash);
+  }
+}
+
+@keyframes trim-line {
+  0% {
+    transform: translate(-50%, -50%) scaleY(0);
+  }
+  30% {
+    transform: translate(-50%, -50%) scaleY(0);
+  }
+  45% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+  78% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+  95% {
+    transform: translate(-50%, -50%) scaleY(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleY(0);
+  }
+}

@@ -1,5 +1,15 @@
 @import 'reset.css';
 
+@font-face {
+  font-family: 'NHaasGrotesk';
+  src: url('./fonts/NHaasGroteskTXPro-55Rg.woff'),
+    url('./fonts/NHaasGroteskTXPro-55Rg.woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  font-feature-settings: 'case' on;
+}
+
 :root {
   color-scheme: light dark;
 
@@ -12,15 +22,8 @@
   --white: rgb(var(--white-rgb));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --white: rgb(var(--black-rgb));
-    --black: rgb(var(--white-rgb));
-  }
-}
-
 html {
-  font-family: helvetica, sans-serif;
+  font-family: NHaasGrotesk, helvetica, sans-serif;
   color: var(--lime);
   background: var(--black);
   font-size: calc(62.5% * var(--n));
@@ -38,7 +41,10 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 1.6rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.8rem;
 }
 
 #site {

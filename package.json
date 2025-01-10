@@ -27,6 +27,7 @@
     "vite-plugin-minify": "^2.0.1"
   },
   "dependencies": {
+    "lottie-web-light": "^1.1.0",
     "lz-string": "^1.5.0"
   }
 }
