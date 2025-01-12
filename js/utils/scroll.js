@@ -56,7 +56,7 @@ export const onScroll = (() => {
   }
   return (callback, options) => {
     const { smoothness } = { ...defaultOptions, ...options }
-    let y = 0
+    let y = scrollY
     let nextY = y
     let raf = null
     let then = Date.now()
@@ -73,16 +73,25 @@ export const onScroll = (() => {
         raf = null
       }
     }
-    const onScroll = () => {
+    const onScroll = (e) => {
       nextY = document.body.scrollTop
       if (raf === null) {
         raf = requestAnimationFrame(tick)
       }
     }
-    addEventListener('scroll', onScroll)
-    return () => {
-      cancelAnimationFrame(raf)
-      removeEventListener('scroll', onScroll)
+    addEventListener('scroll', onScroll, { passive: true })
+    return {
+      scrollTo: (value) => {
+        y = value
+        nextY = value
+        if (raf === null) {
+          raf = requestAnimationFrame(tick)
+        }
+      },
+      destroy: () => {
+        cancelAnimationFrame(raf)
+        removeEventListener('scroll', onScroll)
+      },
     }
   }
 })()
