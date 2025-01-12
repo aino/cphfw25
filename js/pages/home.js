@@ -1,13 +1,23 @@
 import { smoothScroll, onScroll } from '@/js/utils/scroll'
-import { create, id, createFromString, q, style } from '@/js/utils/dom'
+import {
+  create,
+  id,
+  createFromString,
+  q,
+  style,
+  getStyle,
+} from '@/js/utils/dom'
 import animate from '@/js/utils/animate'
 import state from '@/js/utils/state'
 
 import '@/styles/pages/home.css'
 
-const isChrome =
+const fakeScroll =
+  !('ontouchstart' in window) &&
   /Chrome\/[\d.]+/.test(navigator.userAgent) &&
   !/Edg|OPR|Brave/.test(navigator.userAgent)
+
+console.log({ fakeScroll })
 
 export const path = /^\/$/
 
@@ -15,14 +25,6 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export default async function home(app) {
   const site = id('site')
-  if (isChrome) {
-    style(site, {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-    })
-  }
   const destroyers = []
   const ghost = create('div')
   const [hero] = q('.hero', site)
@@ -48,7 +50,7 @@ export default async function home(app) {
   const [soundButton] = q('.sound', buttons)
 
   buttons.querySelector('button').addEventListener('click', () => {
-    if (isChrome) {
+    if (fakeScroll) {
       scrollTo(0, innerHeight + 100)
     } else {
       smoothScroll({
@@ -84,6 +86,49 @@ export default async function home(app) {
       start()
     },
   })
+
+  const sideGalleries = q('.sidegallery', site)
+
+  sideGalleries.forEach((sidegallery, i) => {
+    sidegallery.dataset.direction = i % 2 === 1 ? 'left' : 'right'
+    const [images] = q('.images', sidegallery)
+    const gap = parseFloat(getStyle(images, 'gap'))
+    let edge = 0
+    for (const image of q('.image', images)) {
+      edge += image.offsetWidth + gap
+      images.appendChild(image.cloneNode(true))
+    }
+    const halfGap = Math.floor(gap / 2)
+    sidegallery.scrollTo(halfGap + 1, 0)
+    sidegallery.addEventListener('scroll', (e) => {
+      const x = sidegallery.scrollLeft
+      if (x >= edge + halfGap) {
+        sidegallery.scrollTo(halfGap + 1, 0)
+      } else if (x < halfGap) {
+        sidegallery.scrollTo(edge + halfGap - 1, 0)
+      }
+    })
+  })
+
+  const startSideGalleries = () => {
+    let then = Date.now()
+    ;(function loop() {
+      const now = Date.now()
+      const distance = (now - then) / 20
+      for (const sidegallery of sideGalleries) {
+        let nextX = sidegallery.scrollLeft
+        if (sidegallery.dataset.direction == 'left') {
+          nextX -= distance
+        } else {
+          nextX += distance * 2
+        }
+        sidegallery.scrollTo(nextX, 0)
+      }
+      then = now
+      requestAnimationFrame(loop)
+    })()
+  }
+  startSideGalleries()
 
   Promise.all([
     wait(500),
@@ -132,12 +177,16 @@ export default async function home(app) {
     const spacerBottom = spacerTop.cloneNode(true)
     site.appendChild(spacerBottom)
     site.prepend(spacerTop)
-    if (isChrome) {
+    if (fakeScroll) {
       site.before(ghost)
+    } else {
+      style(site, {
+        position: 'relative',
+      })
     }
     setGhostHeight()
     scrollTo(0, innerHeight + 100)
-    if (isChrome) {
+    if (fakeScroll) {
       site.style.transform = `translateY(${-(innerHeight + 100)}px)`
     }
     buttons.classList.add('transition')
@@ -151,7 +200,7 @@ export default async function home(app) {
       })
     })
 
-    if (!isChrome) {
+    if (!fakeScroll) {
       const observerOptions = {
         root: null,
         rootMargin: '0px',

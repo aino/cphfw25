@@ -52,12 +52,6 @@ body {
   line-height: 1.8rem;
 }
 
-#site {
-  background: var(--black);
-  min-height: 100vh;
-  position: relative;
-}
-
 button {
   height: 4.8rem;
   border-radius: 0.4rem;

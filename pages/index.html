@@ -16,7 +16,9 @@
   <section class="sidegallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}
-      <img {{img this }} />
+      <div class="image">
+        <img {{img this }} />
+      </div>
       {{/each }}
     </div>
   </section>
@@ -24,7 +26,9 @@
   <section class="gallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}
-      <img {{img this }} />
+      <div class="image">
+        <img {{img this }} />
+      </div>
       {{/each }}
     </div>
   </section>
