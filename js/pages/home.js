@@ -20,7 +20,7 @@ const isChrome =
   /Chrome\/[\d.]+/.test(navigator.userAgent) &&
   !/Edg|OPR|Brave/.test(navigator.userAgent)
 
-const fakeScroll = isTouch && isChrome
+const fakeScroll = false // isTouch && isChrome
 
 export const path = /^\/$/
 
@@ -256,6 +256,9 @@ export default async function home(app) {
   }
 
   function closeDescription() {
+    if (!descriptionIsOpen) {
+      return
+    }
     descriptionIsOpen = false
     description.style.height = '0px'
     descriptionText.style.opacity = 0
@@ -337,6 +340,9 @@ export default async function home(app) {
                 intersectionRatio: entry.intersectionRatio,
               }
               animateButton(title || sections[0].dataset.title)
+              if (section.classList.contains('block')) {
+                openDescription(section.innerHTML)
+              }
             }
           }
         })

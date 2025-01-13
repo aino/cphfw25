@@ -22,7 +22,12 @@
       {{/each }}
     </div>
   </section>
-  {{/if }} {{#if gallery }}
+  {{/if }} {{#if textBlocks }} {{#each blocks }}
+  <section class="block" data-title="{{../title}}">
+    <h2>{{ name }}<br />{{ title }}</h2>
+    <p>{{ description }}</p>
+  </section>
+  {{/each }} {{/if }} {{#if gallery }}
   <section class="gallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}
