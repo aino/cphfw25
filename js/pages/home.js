@@ -1,4 +1,4 @@
-import { onScroll } from '@/js/utils/scroll'
+import { onScroll, smoothScroll } from '@/js/utils/scroll'
 import {
   create,
   id,
@@ -263,6 +263,14 @@ export default async function home(app) {
   }
 
   centerButton.addEventListener('click', () => {
+    if (fakeScroll) {
+      scrollTo(0, innerHeight + 100)
+    } else {
+      smoothScroll({
+        to: innerHeight + 100,
+      })
+    }
+    /*
     if (descriptionIsOpen && !infoIsOpen) {
       closeDescription()
     } else {
@@ -283,6 +291,7 @@ export default async function home(app) {
           for effortless expression.
         </p>`)
     }
+        */
   })
 
   function start() {
