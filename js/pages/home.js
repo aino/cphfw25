@@ -1,4 +1,4 @@
-import { smoothScroll, onScroll } from '@/js/utils/scroll'
+import { onScroll } from '@/js/utils/scroll'
 import {
   create,
   id,
@@ -12,12 +12,15 @@ import state from '@/js/utils/state'
 
 import '@/styles/pages/home.css'
 
-const fakeScroll =
-  !('ontouchstart' in window) &&
+const AUTOSCROLL_TIMEOUT = 5000
+
+const isTouch = 'ontouchstart' in window
+
+const isChrome =
   /Chrome\/[\d.]+/.test(navigator.userAgent) &&
   !/Edg|OPR|Brave/.test(navigator.userAgent)
 
-console.log({ fakeScroll })
+const fakeScroll = isTouch && isChrome
 
 export const path = /^\/$/
 
@@ -29,6 +32,10 @@ export default async function home(app) {
   const ghost = create('div')
   const [hero] = q('.hero', site)
   const [buttons] = q('.buttons', app)
+  const autoscroll = state(false)
+  let infoIsOpen = false
+  let descriptionIsOpen = false
+
   let siteHeight = 0
   const loader = createFromString(
     `
@@ -46,18 +53,19 @@ export default async function home(app) {
   const progress = create('div', { class: 'progress' }, loader)
   const fader = create('div', { class: 'fader' }, hero)
   const [video] = q('video', hero)
-  const [centerButton] = q('.center', buttons)
-  const [soundButton] = q('.sound', buttons)
+  const [infoButton, centerButton, soundButton] = q('button', buttons)
 
-  buttons.querySelector('button').addEventListener('click', () => {
-    if (fakeScroll) {
-      scrollTo(0, innerHeight + 100)
+  infoButton.addEventListener('click', () => {
+    infoIsOpen = !infoIsOpen
+    if (infoIsOpen) {
+      openDescription(
+        '<h2>About CPHFW</h2><p>With a nod to its Scandinavian heritage, Samsøe Samsøe is defined by a wearable aesthetic that combines the utilitarian ease of Copenhagen street style with a quintessentially Scandinavian spirit. Collections transcend trends, drawing on Denmark’s renowned design tradition to result in minimalist, affordable and accessible fashion.</p>'
+      )
     } else {
-      smoothScroll({
-        to: innerHeight + 100,
-      })
+      closeDescription()
     }
   })
+
   const centerButtonText = centerButton.children[0]
   const fakeButton = centerButton.cloneNode(true)
   style(fakeButton, {
@@ -92,12 +100,22 @@ export default async function home(app) {
   sideGalleries.forEach((sidegallery, i) => {
     sidegallery.dataset.direction = i % 2 === 1 ? 'left' : 'right'
     const [images] = q('.images', sidegallery)
-    const gap = parseFloat(getStyle(images, 'gap'))
+    let gap = parseFloat(getStyle(images, 'gap'))
     let edge = 0
     for (const image of q('.image', images)) {
       edge += image.offsetWidth + gap
       images.appendChild(image.cloneNode(true))
     }
+    const observer = new ResizeObserver(() => {
+      edge = 0
+      gap = parseFloat(getStyle(images, 'gap'))
+      q('.image', images).forEach((image, i) => {
+        if (i < images.children.length / 2) {
+          edge += image.offsetWidth + gap
+        }
+      })
+    })
+    observer.observe(images)
     const halfGap = Math.floor(gap / 2)
     sidegallery.scrollTo(halfGap + 1, 0)
     sidegallery.addEventListener('scroll', (e) => {
@@ -112,7 +130,7 @@ export default async function home(app) {
 
   const startSideGalleries = () => {
     let then = Date.now()
-    ;(function loop() {
+    function loop() {
       const now = Date.now()
       const distance = (now - then) / 20
       for (const sidegallery of sideGalleries) {
@@ -126,7 +144,8 @@ export default async function home(app) {
       }
       then = now
       requestAnimationFrame(loop)
-    })()
+    }
+    requestAnimationFrame(loop)
   }
   startSideGalleries()
 
@@ -161,6 +180,9 @@ export default async function home(app) {
     if (fakeButton.children[0].textContent === text) {
       return
     }
+    if (!infoIsOpen) {
+      closeDescription()
+    }
     centerButtonText.style.opacity = 0
     fakeButton.children[0].textContent = text
     const newWidth = fakeButton.getBoundingClientRect().width
@@ -171,6 +193,97 @@ export default async function home(app) {
       centerButtonText.style.opacity = 1
     }, 200)
   }
+
+  const description = create('div', { class: 'description' })
+  const descriptionText = create(
+    'div',
+    { class: 'description-text' },
+    description
+  )
+  const fakeDescription = description.cloneNode(true)
+  style(fakeDescription, {
+    position: 'absolute',
+    opacity: 0,
+    pointerEvents: 'none',
+    overflow: 'visible',
+    height: 'auto',
+  })
+
+  const resizeDescription = () => {
+    const width = `${buttons.getBoundingClientRect().width}px`
+    const height = descriptionIsOpen
+      ? fakeDescription.getBoundingClientRect().height
+      : 0
+    fakeDescription.style.width = width
+    if (descriptionIsOpen) {
+      buttons.parentNode.style.transform = `translateY(${height / -2}px)`
+    }
+    style(description, { width, height })
+  }
+
+  const buttonsObserver = new ResizeObserver(resizeDescription)
+
+  buttonsObserver.observe(buttons)
+
+  buttons.after(description)
+  buttons.after(fakeDescription)
+
+  function openDescription(html) {
+    if (!html) {
+      closeDescription()
+      return
+    }
+    description.style.height = '0px'
+    descriptionText.style.opacity = 0
+    fakeDescription.children[0].innerHTML = html
+    const newHeight = fakeDescription.getBoundingClientRect().height
+    if (descriptionIsOpen) {
+      setTimeout(() => {
+        descriptionIsOpen = true
+        descriptionText.innerHTML = html
+        descriptionText.style.opacity = 1
+        description.style.height = `${newHeight}px`
+      }, 300)
+    } else {
+      descriptionIsOpen = true
+      descriptionText.innerHTML = html
+      description.style.height = `${newHeight}px`
+      setTimeout(() => {
+        descriptionText.style.opacity = 1
+      }, 400)
+    }
+    resizeDescription()
+  }
+
+  function closeDescription() {
+    descriptionIsOpen = false
+    description.style.height = '0px'
+    descriptionText.style.opacity = 0
+    buttons.parentNode.style.transform = ''
+  }
+
+  centerButton.addEventListener('click', () => {
+    if (descriptionIsOpen && !infoIsOpen) {
+      closeDescription()
+    } else {
+      infoIsOpen = false
+      openDescription(`
+      <h2>Radiant Connections</h2>
+        <p>
+          ${
+            Math.random() > 0.5
+              ? 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'
+              : ''
+          }
+          Radiant Connections explores the harmony between urban energy and natural
+          simplicity. With clean silhouettes, layered textures, and a warm, earthy
+          palette, the collection highlights the brand’s Scandinavian roots while
+          introducing innovative, sustainable materials. Radiant Connections
+          reflects modern Nordic fashion with timeless, understated pieces designed
+          for effortless expression.
+        </p>`)
+    }
+  })
 
   function start() {
     const spacerTop = create('div', { class: 'spacer' })
@@ -291,20 +404,31 @@ export default async function home(app) {
 
     const scrollFrame = () => {
       let then = Date.now()
-      let factor = 0
-      animate({
-        duration: 1600,
-        onFrame: (n) => {
-          factor = n
-        },
-      })
-      ;(function loop() {
+      function loop() {
         const now = Date.now()
-        const nextY = scrollY + ((now - then) / 12) * factor
+        const nextY = scrollY + (now - then) / 12
         scrollTo(0, nextY)
         then = now
-        requestAnimationFrame(loop)
-      })()
+        if (autoscroll.value) {
+          requestAnimationFrame(loop)
+        }
+      }
+      loop()
+      if (!isTouch) {
+        const activateScroll = () => {
+          then = Date.now()
+          autoscroll.set(true)
+          loop()
+        }
+        let autoscrollTimer = setTimeout(activateScroll, AUTOSCROLL_TIMEOUT)
+        const stopScroll = () => {
+          clearTimeout(autoscrollTimer)
+          autoscrollTimer = setTimeout(activateScroll, AUTOSCROLL_TIMEOUT)
+          autoscroll.set(false)
+        }
+        addEventListener('mousemove', stopScroll)
+        addEventListener('wheel', stopScroll)
+      }
     }
     setTimeout(scrollFrame, 600)
   }
