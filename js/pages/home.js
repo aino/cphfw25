@@ -56,6 +56,14 @@ export default async function home(app) {
   const [infoButton, centerButton, soundButton] = q('button', buttons)
 
   infoButton.addEventListener('click', () => {
+    if (fakeScroll) {
+      scrollTo(0, innerHeight + 100)
+    } else {
+      smoothScroll({
+        to: innerHeight + 100,
+      })
+    }
+    /*
     infoIsOpen = !infoIsOpen
     if (infoIsOpen) {
       openDescription(
@@ -64,6 +72,7 @@ export default async function home(app) {
     } else {
       closeDescription()
     }
+      */
   })
 
   const centerButtonText = centerButton.children[0]
@@ -263,14 +272,6 @@ export default async function home(app) {
   }
 
   centerButton.addEventListener('click', () => {
-    if (fakeScroll) {
-      scrollTo(0, innerHeight + 100)
-    } else {
-      smoothScroll({
-        to: innerHeight + 100,
-      })
-    }
-    /*
     if (descriptionIsOpen && !infoIsOpen) {
       closeDescription()
     } else {
@@ -291,7 +292,6 @@ export default async function home(app) {
           for effortless expression.
         </p>`)
     }
-        */
   })
 
   function start() {
