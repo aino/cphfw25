@@ -5,30 +5,58 @@ export const routes = {
     data: async ({ lang }) => {
       const sections = [
         {
-          sideGallery: true,
-          title: 'Exhibition Space',
-          images: ['/images/side1.png', '/images/side2.png'],
+          video: true,
+          title: 'Radiant Connections',
+          video: '/hero.mp4',
+          description: `<h2>About Radiant Connections</h2><p>Radiant Connections explores the harmony between urban energy and natural
+          simplicity. With clean silhouettes, layered textures, and a warm, earthy
+          palette, the collection highlights the brand’s Scandinavian roots while
+          introducing innovative, sustainable materials. Radiant Connections
+          reflects modern Nordic fashion with timeless, understated pieces designed
+          for effortless expression.</p>`,
         },
         {
-          textBlocks: true,
+          sideGallery: true,
+          title: 'Exhibition Space',
+          description:
+            '<h2>Discover the future of fashion</h2><p>Experience the latest trends and styles in our immersive exhibition space.</p>',
+          images: [
+            {
+              image: '/images/side1.png',
+            },
+            {
+              image: '/images/side2.png',
+            },
+          ],
+        },
+        {
+          image: true,
           title: 'Creative Team',
-          blocks: [
+          background: '/images/team.webp',
+          description: `
+            <h2>Natalia Marekova<br>Art Director</h2>
+            <p>Natalia is a visionary artist with a passion for creating immersive experiences.</p>
+            <h2>Jesper Lund<br>Creative Director</h2>
+            <p>Jesper is a master of storytelling and a true visionary.</p>
+            <h2>Mia Hansen<br>Stylist</h2>
+            <p>Mia is a fashion icon and a master of style.</p>
+          `,
+        },
+        {
+          sideGallery: true,
+          title: 'Octarine Purepalette™',
+          description:
+            '<h2>Discover the future of color</h2><p>Experience the latest trends and styles in our immersive exhibition space.</p>',
+          images: [
             {
-              name: 'Natalia Marekova',
-              title: 'Art Director',
-              description:
-                'Natalia is a visionary artist with a passion for creating immersive experiences.',
+              title: 'Our mission',
+              description: 'We are on a mission to bring color to the world.',
+              image: '/images/oct1.png',
             },
             {
-              name: 'Jesper Lund',
-              title: 'Creative Director',
-              description:
-                'Jesper is a master of storytelling and a true visionary.',
-            },
-            {
-              name: 'Mia Hansen',
-              title: 'Stylist',
-              description: 'Mia is a fashion icon and a master of style.',
+              title: 'Our mission',
+              description: 'We are on a mission to bring color to the world.',
+              image: '/images/oct2.png',
             },
           ],
         },
@@ -68,7 +96,13 @@ export const routes = {
         title: `Samsøe Samsøe CPHFW 2025`,
         heroVideo: '/hero.mp4',
         sections,
-        showTitle: 'Radiant Connections',
+        name: 'Radiant Connections',
+        description: `<h2>About Radiant Connections</h2><p>Radiant Connections explores the harmony between urban energy and natural
+          simplicity. With clean silhouettes, layered textures, and a warm, earthy
+          palette, the collection highlights the brand’s Scandinavian roots while
+          introducing innovative, sustainable materials. Radiant Connections
+          reflects modern Nordic fashion with timeless, understated pieces designed
+          for effortless expression.</p>`,
       }
     },
   },

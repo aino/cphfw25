@@ -30,7 +30,8 @@ export default async function home(app) {
   const site = id('site')
   const destroyers = []
   const ghost = create('div')
-  const [hero] = q('.hero', site)
+  const sections = q('section', site)
+  const hero = sections[0]
   const [buttons] = q('.buttons', app)
   const autoscroll = state(false)
   let infoIsOpen = false
@@ -47,15 +48,24 @@ export default async function home(app) {
         <div class="line"></div>
       </div>
     </div>
-  `,
-    hero
+  `
   )
+  site.prepend(loader)
   const progress = create('div', { class: 'progress' }, loader)
-  const fader = create('div', { class: 'fader' }, hero)
+  const fader = create('div', { class: 'fader' }, site)
   const [video] = q('video', hero)
   const [infoButton, centerButton, soundButton] = q('button', buttons)
 
   infoButton.addEventListener('click', () => {
+    if (fakeScroll) {
+      scrollTo(0, innerHeight + 100)
+    } else {
+      smoothScroll({
+        to: innerHeight + 100,
+        duration: 500,
+      })
+    }
+    /*
     infoIsOpen = !infoIsOpen
     if (infoIsOpen) {
       openDescription(
@@ -64,6 +74,7 @@ export default async function home(app) {
     } else {
       closeDescription()
     }
+      */
   })
 
   const centerButtonText = centerButton.children[0]
@@ -84,11 +95,12 @@ export default async function home(app) {
   })
 
   animate({
-    duration: 300,
+    duration: 3300,
     onFrame: (n) => {
       progress.innerText = `Loading Radiant Connections ${Math.ceil(n * 100)}%`
     },
     onComplete: () => {
+      fader.classList.add('out')
       loader.classList.add('fadeout')
       loader.classList.add('pause')
       start()
@@ -152,7 +164,7 @@ export default async function home(app) {
   Promise.all([
     wait(500),
     new Promise((resolve) => {
-      if (video.readyState >= 3) {
+      if (!video || video.readyState >= 3) {
         resolve()
       } else {
         video.addEventListener('playing', resolve)
@@ -162,8 +174,7 @@ export default async function home(app) {
     fader.classList.add('fade')
     loader.classList.remove('pause')
   })
-
-  const sections = q('section', site)
+  let activeSection = null
 
   const setGhostHeight = () => {
     const { height } = site.getBoundingClientRect()
@@ -181,7 +192,7 @@ export default async function home(app) {
       return
     }
     if (!infoIsOpen) {
-      closeDescription()
+      // closeDescription()
     }
     centerButtonText.style.opacity = 0
     fakeButton.children[0].textContent = text
@@ -266,25 +277,20 @@ export default async function home(app) {
   }
 
   centerButton.addEventListener('click', () => {
+    if (activeSection.classList.contains('footer')) {
+      open('https://samsoe.com')
+      return
+    }
     if (descriptionIsOpen && !infoIsOpen) {
       closeDescription()
     } else {
       infoIsOpen = false
-      openDescription(`
-      <h2>Radiant Connections</h2>
-        <p>
-          ${
-            Math.random() > 0.5
-              ? 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'
-              : ''
-          }
-          Radiant Connections explores the harmony between urban energy and natural
-          simplicity. With clean silhouettes, layered textures, and a warm, earthy
-          palette, the collection highlights the brand’s Scandinavian roots while
-          introducing innovative, sustainable materials. Radiant Connections
-          reflects modern Nordic fashion with timeless, understated pieces designed
-          for effortless expression.
-        </p>`)
+      if (activeSection) {
+        const [desc] = q('.description', activeSection)
+        if (desc) {
+          openDescription(desc.innerHTML)
+        }
+      }
     }
   })
 
@@ -315,98 +321,60 @@ export default async function home(app) {
         })
       })
     })
-
-    if (!fakeScroll) {
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5,
-      }
-
-      let mostVisibleSection = null
-
-      const observerCallback = (entries) => {
-        entries.forEach((entry) => {
-          const section = entry.target
-          if (entry.isIntersecting) {
-            const title = section.dataset.title
-            if (
-              !mostVisibleSection ||
-              mostVisibleSection.section !== section ||
-              entry.intersectionRatio > mostVisibleSection.intersectionRatio
-            ) {
-              mostVisibleSection = {
-                section,
-                intersectionRatio: entry.intersectionRatio,
-              }
-              animateButton(title || sections[0].dataset.title)
-              if (section.classList.contains('block')) {
-                openDescription(section.innerHTML)
-              }
-            }
-          }
-        })
-      }
-
-      const observer = new IntersectionObserver(
-        observerCallback,
-        observerOptions
-      )
-      sections.forEach((section) => observer.observe(section))
-      const scrollHandler = () => {
-        if (scrollY < 100) {
-          scrollTo(0, siteHeight - innerHeight - 100)
-        } else if (scrollY > siteHeight - innerHeight - 100) {
-          scrollTo(0, 100)
-        }
-      }
-
-      addEventListener('scroll', scrollHandler)
-    } else {
-      const scroller = onScroll(
-        (y) => {
-          let nextY
-          if (y < 100) {
-            nextY = siteHeight - innerHeight - 100
-          } else if (y > siteHeight - innerHeight - 100) {
-            nextY = 100
-          }
-          if (nextY !== undefined) {
-            scroller.scrollTo(nextY)
-            scrollTo(0, nextY)
-          }
-          const pos = nextY || y
-          const roundedPos = Math.round(pos * 10) / 10
-          site.style.transform = `translateY(${-roundedPos}px)`
-          let mostVisibleSection = null
-          let maxVisibility = 0
-
-          sections.forEach((section) => {
-            const visibleHeight = Math.max(
-              0,
-              Math.min(
-                pos + innerHeight,
-                section.offsetTop + section.offsetHeight
-              ) - Math.max(pos, section.offsetTop)
-            )
-            if (visibleHeight > maxVisibility) {
-              maxVisibility = visibleHeight
-              mostVisibleSection = section
-            }
-            section.classList.remove('active')
-          })
-
-          if (mostVisibleSection) {
-            const title = mostVisibleSection.dataset.title
-            animateButton(title || sections[0].dataset.title)
-          }
-        },
-        {
-          smoothness: 4,
-        }
-      )
-      destroyers.push(scroller.destroy)
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
     }
+
+    const observerCallback = (entries) => {
+      let closestSection = null
+      let closestDistance = Infinity
+      const screenCenter = innerHeight / 2
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const rect = entry.target.getBoundingClientRect()
+          const sectionCenter = rect.top + rect.height / 2
+          const distanceToCenter = Math.abs(sectionCenter - screenCenter)
+
+          if (distanceToCenter < closestDistance) {
+            closestSection = entry.target
+            closestDistance = distanceToCenter
+          }
+        }
+      })
+
+      if (closestSection && activeSection !== closestSection) {
+        activeSection = closestSection
+        let title = activeSection.dataset.title
+        if (!title && activeSection.classList.contains('footer')) {
+          title = 'Visit shop'
+        }
+        animateButton(title)
+
+        if (descriptionIsOpen) {
+          const [desc] = q('.description', activeSection)
+          if (desc) {
+            openDescription(desc.innerHTML)
+          } else {
+            closeDescription()
+          }
+        }
+      }
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+    sections.forEach((section) => observer.observe(section))
+    const scrollHandler = () => {
+      if (scrollY < 100) {
+        scrollTo(0, siteHeight - innerHeight - 100)
+      } else if (scrollY > siteHeight - innerHeight - 100) {
+        scrollTo(0, 100)
+      }
+    }
+
+    addEventListener('scroll', scrollHandler)
 
     const scrollFrame = () => {
       let then = Date.now()

@@ -8,6 +8,25 @@ body.home {
     width: 100vw;
   }
 
+  .fader {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--black-rgb), 1);
+    z-index: 2;
+    transition: background-color 1s ease-out;
+    &.fade {
+      background: rgba(var(--black-rgb), 0.7);
+    }
+    &.out {
+      background: rgba(var(--black-rgb), 0);
+    }
+  }
+
+  .video,
   .hero {
     width: 100vw;
     height: 100vh;
@@ -20,23 +39,21 @@ body.home {
       object-fit: cover;
       position: absolute;
     }
-    .fader {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(var(--black-rgb), 1);
-      z-index: 2;
-      transition: background-color 1s ease-out;
-      &.fade {
-        background: rgba(var(--black-rgb), 0.5);
-      }
-    }
   }
 
   #site > section {
     margin-bottom: 30vh;
+    position: relative;
+  }
+
+  section.image {
+    height: 100vh;
+    background: #111;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   .sidegallery {
@@ -49,7 +66,8 @@ body.home {
     }
     .images {
       display: flex;
-      height: 60vh;
+      height: 80vh;
+      margin: 10vh 0;
       gap: 15rem;
       padding-left: 15rem;
       /* scroll-snap-type: x mandatory; */
@@ -58,11 +76,22 @@ body.home {
       flex: 0 0 50vw;
       width: 50vw;
       height: 100%;
+      position: relative;
+      &:nth-child(odd) {
+        height: 75%;
+      }
       /* scroll-snap-align: center; */
       img {
-        width: 100%;
         height: 100%;
-        object-fit: cover;
+      }
+      .info {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        p {
+          text-transform: none;
+          letter-spacing: 0;
+        }
       }
     }
   }
@@ -87,7 +116,7 @@ body.home {
 
   .loadercontainer {
     pointer-events: none;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -198,21 +227,19 @@ body.home {
     > div {
       margin: 2rem;
       transition: opacity 0.2s ease-out;
-      display: flex;
+      display: grid;
       gap: 2rem;
+      grid-template-columns: 33% calc(66% - 2rem);
       h2 {
-        flex: 0 0 33%;
-        max-width: 33%;
+        grid-column: 1;
       }
       p {
-        flex: 1;
-        max-width: 66%;
+        grid-column: 2;
         text-transform: none;
         letter-spacing: 0;
       }
       :has(:not(h2)) p {
-        flex: 0 0 100%; /* P stretches to full width */
-        max-width: 100%;
+        grid-column: 1 / -1; /* P stretches to full width */
       }
     }
   }

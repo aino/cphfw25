@@ -7,27 +7,34 @@
   </div>
 </div>
 <div id="site">
-  <section class="hero" data-title="{{ showTitle }}">
+  {{#each sections }} {{#if video}}
+  <section class="video" data-title="{{ title }}">
     <video autoplay loop muted playsinline>
-      <source src="{{ heroVideo }}" type="video/mp4" />
+      <source src="{{ video }}" type="video/mp4" />
     </video>
+    <div class="description">{{{ description }}}</div>
   </section>
-  {{#each sections }} {{#if sideGallery }}
+  {{/if }} {{#if sideGallery }}
   <section class="sidegallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}
       <div class="image">
-        <img {{img this }} />
+        <img {{img image }} />
+        <div class="info">
+          <h3>{{ title }}</h3>
+          <p>{{ description }}</p>
+        </div>
       </div>
       {{/each }}
     </div>
+    <div class="description">{{{ description }}}</div>
   </section>
-  {{/if }} {{#if textBlocks }} {{#each blocks }}
-  <section class="block" data-title="{{../title}}">
-    <h2>{{ name }}<br />{{ title }}</h2>
-    <p>{{ description }}</p>
+  {{/if }} {{#if image }}
+  <section class="image" data-title="{{ title }}">
+    <img {{ img background }} />
+    <div class="description">{{{ description }}}</div>
   </section>
-  {{/each }} {{/if }} {{#if gallery }}
+  {{/if }} {{#if gallery }}
   <section class="gallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}
@@ -36,6 +43,7 @@
       </div>
       {{/each }}
     </div>
+    <div class="description">{{{ description }}}</div>
   </section>
   {{/if }} {{/each }}
   <section class="footer">
