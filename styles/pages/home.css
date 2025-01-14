@@ -66,22 +66,27 @@ body.home {
     &::-webkit-scrollbar {
       display: none;
     }
+    .description {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+    }
     .images {
       display: flex;
       height: 80vh;
       margin: 10vh 0;
-      gap: 15rem;
-      padding-left: 15rem;
+      gap: 20rem;
+      padding-left: 20rem;
       /* scroll-snap-type: x mandatory; */
     }
     .image {
       height: 100%;
       position: relative;
-      flex: 0 0 60%;
+      flex: 0 0 65%;
       width: 60%;
       &:nth-child(odd) {
-        flex: 0 0 40%;
-        width: 40%;
+        flex: 0 0 35%;
+        width: 35%;
       }
       img {
         max-width: 100%;
