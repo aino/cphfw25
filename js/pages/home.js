@@ -57,15 +57,14 @@ export default async function home(app) {
   const [infoButton, centerButton, soundButton] = q('button', buttons)
 
   infoButton.addEventListener('click', () => {
-    if (fakeScroll) {
-      scrollTo(0, innerHeight + 100)
-    } else {
-      smoothScroll({
-        to: innerHeight + 100,
-        duration: 500,
-      })
-    }
-    /*
+    // if (fakeScroll) {
+    //   scrollTo(0, innerHeight + 100)
+    // } else {
+    //   smoothScroll({
+    //     to: innerHeight + 100,
+    //     duration: 500,
+    //   })
+    // }
     infoIsOpen = !infoIsOpen
     if (infoIsOpen) {
       openDescription(
@@ -74,7 +73,6 @@ export default async function home(app) {
     } else {
       closeDescription()
     }
-      */
   })
 
   const centerButtonText = centerButton.children[0]
@@ -108,6 +106,15 @@ export default async function home(app) {
   })
 
   const sideGalleries = q('.sidegallery', site)
+
+  for (const images of q('.gallery .images', site)) {
+    let i = 0
+    for (const image of q('.image img', images)) {
+      image.style.opacity = 0
+      image.style.transitionDelay = `${i * 0.1}s`
+      i++
+    }
+  }
 
   sideGalleries.forEach((sidegallery, i) => {
     sidegallery.dataset.direction = i % 2 === 1 ? 'left' : 'right'
@@ -199,7 +206,6 @@ export default async function home(app) {
     const newWidth = fakeButton.getBoundingClientRect().width
     centerButton.style.width = `${newWidth}px`
     setTimeout(() => {
-      console.log('set', text)
       centerButtonText.textContent = text
       centerButtonText.style.opacity = 1
     }, 200)
@@ -334,6 +340,7 @@ export default async function home(app) {
 
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+          entry.target.classList.add('inview')
           const rect = entry.target.getBoundingClientRect()
           const sectionCenter = rect.top + rect.height / 2
           const distanceToCenter = Math.abs(sectionCenter - screenCenter)
@@ -390,7 +397,6 @@ export default async function home(app) {
       loop()
       if (!isTouch) {
         const activateScroll = () => {
-          return
           then = Date.now()
           autoscroll.set(true)
           loop()

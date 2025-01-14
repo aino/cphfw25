@@ -73,12 +73,18 @@ export const routes = {
             '/images/guest1.png',
             '/images/guest2.png',
             '/images/guest3.png',
+            '/images/guest1.png',
+            '/images/guest2.png',
+            '/images/guest3.png',
           ],
         },
         {
           gallery: true,
           title: 'Lookbook',
           images: [
+            '/images/team1.png',
+            '/images/team2.png',
+            '/images/team3.png',
             '/images/team1.png',
             '/images/team2.png',
             '/images/team3.png',

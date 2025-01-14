@@ -29,16 +29,13 @@ html {
   color: var(--lime);
   background: var(--black);
   font-size: calc(62.5% * var(--n));
-  /*
   -ms-overflow-style: none;
   scrollbar-width: none;
-  */
 }
-/*
+
 html::-webkit-scrollbar {
   display: none;
 }
-  */
 
 body {
   margin: 0;
