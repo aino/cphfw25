@@ -390,6 +390,7 @@ export default async function home(app) {
       loop()
       if (!isTouch) {
         const activateScroll = () => {
+          return
           then = Date.now()
           autoscroll.set(true)
           loop()

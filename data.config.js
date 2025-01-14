@@ -7,7 +7,7 @@ export const routes = {
         {
           video: true,
           title: 'Radiant Connections',
-          video: '/hero.mp4',
+          background: '/hero.mp4',
           description: `<h2>About Radiant Connections</h2><p>Radiant Connections explores the harmony between urban energy and natural
           simplicity. With clean silhouettes, layered textures, and a warm, earthy
           palette, the collection highlights the brand’s Scandinavian roots while
