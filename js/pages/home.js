@@ -150,6 +150,7 @@ export default async function home(app) {
   const startSideGalleries = () => {
     let then = Date.now()
     function loop() {
+      return
       const now = Date.now()
       const distance = (now - then) / 20
       for (const sidegallery of sideGalleries) {
@@ -208,6 +209,7 @@ export default async function home(app) {
     setTimeout(() => {
       centerButtonText.textContent = text
       centerButtonText.style.opacity = 1
+      centerButton.style.width = 'auto'
     }, 200)
   }
 
