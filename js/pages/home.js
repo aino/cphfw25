@@ -9,6 +9,7 @@ import {
 } from '@/js/utils/dom'
 import animate from '@/js/utils/animate'
 import state from '@/js/utils/state'
+import EmblaCarousel from 'embla-carousel'
 
 import '@/styles/pages/home.css'
 
@@ -121,7 +122,86 @@ export default async function home(app) {
     sidegallery.dataset.direction = i % 2 === 1 ? 'left' : 'right'
     const [images] = q('.images', sidegallery)
     let gap = parseFloat(getStyle(images, 'gap'))
+    const halfGap = Math.floor(gap / 2)
     let edge = 0
+    if (isTouch) {
+      ;(() => {
+        sidegallery.style.overflowX = 'hidden'
+        let x = 0
+        let velX = sidegallery.dataset.direction == 'left' ? 0.05 : -0.05
+        let touchX = null
+        let touchY = null
+        let then = Date.now()
+        let direction = null
+
+        sidegallery.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) {
+            touchX = e.touches[0].clientX
+            touchY = e.touches[0].clientY
+          }
+        })
+
+        sidegallery.addEventListener(
+          'touchmove',
+          (e) => {
+            const now = Date.now()
+            if (
+              e.touches.length === 1 &&
+              touchX !== null &&
+              touchY !== null &&
+              direction !== 'y'
+            ) {
+              const nextX = e.touches[0].clientX
+              const nextY = e.touches[0].clientY
+              const distanceX = nextX - touchX
+
+              // Detect horizontal movement
+              if (direction === null) {
+                direction =
+                  Math.abs(distanceX) > Math.abs(nextY - touchY) ? 'x' : 'y'
+                if (direction === 'x') {
+                  document.body.style.overflow = 'hidden'
+                }
+              }
+              const nextVelX = distanceX / (now - then)
+              velX = (velX + nextVelX) / 2
+
+              // Update positions
+              touchX = nextX
+              touchY = nextY
+              then = now
+            }
+          },
+          { passive: false } // Ensure preventDefault works
+        )
+
+        sidegallery.addEventListener('touchend', () => {
+          touchX = null
+          touchY = null
+          direction = null
+          document.body.style.overflow = ''
+        })
+        let lt = Date.now()
+        const l = () => {
+          const now = Date.now()
+          if (Math.abs(velX) > 0.05 || touchX !== null) {
+            velX *= 0.95
+          } else if (direction !== 'x') {
+            velX = sidegallery.dataset.direction == 'left' ? 0.05 : -0.05
+          }
+          x += velX * (now - lt)
+          if (x <= (edge + halfGap) * -1) {
+            x = (halfGap + 1) * -1
+          } else if (x > halfGap) {
+            x = (edge - halfGap - 1) * -1
+          }
+          sidegallery.children[0].style.transform = `translateX(${x}px)`
+          lt = now
+          requestAnimationFrame(l)
+        }
+        l()
+      })()
+    }
     for (const image of q('.image', images)) {
       edge += image.offsetWidth + gap
       images.appendChild(image.cloneNode(true))
@@ -136,37 +216,40 @@ export default async function home(app) {
       })
     })
     observer.observe(images)
-    const halfGap = Math.floor(gap / 2)
-    sidegallery.scrollTo(halfGap + 1, 0)
-    sidegallery.addEventListener('scroll', (e) => {
-      const x = sidegallery.scrollLeft
-      if (x >= edge + halfGap) {
-        sidegallery.scrollTo(halfGap + 1, 0)
-      } else if (x < halfGap) {
-        sidegallery.scrollTo(edge + halfGap - 1, 0)
-      }
-    })
+
+    if (!isTouch) {
+      sidegallery.scrollTo(halfGap + 1, 0)
+      sidegallery.addEventListener('scroll', (e) => {
+        const x = sidegallery.scrollLeft
+        if (x >= edge + halfGap) {
+          sidegallery.scrollTo(halfGap + 1, 0)
+        } else if (x < halfGap) {
+          sidegallery.scrollTo(edge + halfGap - 1, 0)
+        }
+      })
+    }
   })
 
   const startSideGalleries = () => {
-    let then = Date.now()
-    function loop() {
-      return
-      const now = Date.now()
-      const distance = (now - then) / 20
-      for (const sidegallery of sideGalleries) {
-        let nextX = sidegallery.scrollLeft
-        if (sidegallery.dataset.direction == 'left') {
-          nextX -= distance
-        } else {
-          nextX += distance * 2
+    if (!isTouch) {
+      let then = Date.now()
+      function loop() {
+        const now = Date.now()
+        const distance = (now - then) / 20
+        for (const sidegallery of sideGalleries) {
+          let nextX = sidegallery.scrollLeft
+          if (sidegallery.dataset.direction == 'left') {
+            nextX -= distance
+          } else {
+            nextX += distance * 2
+          }
+          sidegallery.scrollTo(nextX, 0)
         }
-        sidegallery.scrollTo(nextX, 0)
+        then = now
+        requestAnimationFrame(loop)
       }
-      then = now
       requestAnimationFrame(loop)
     }
-    requestAnimationFrame(loop)
   }
   startSideGalleries()
 
@@ -404,6 +487,7 @@ export default async function home(app) {
       loop()
       if (!isTouch) {
         const activateScroll = () => {
+          return
           then = Date.now()
           autoscroll.set(true)
           loop()

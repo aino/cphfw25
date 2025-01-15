@@ -64,6 +64,7 @@ body.home {
     overflow-y: hidden;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -323,10 +324,10 @@ body.home {
   body.home {
     .sidegallery {
       .images {
-        gap: 5rem;
-        padding-left: 5rem;
+        gap: 8rem;
+        padding-left: 8rem;
         .image {
-          min-width: 50vw !important;
+          min-width: 80vw !important;
         }
       }
     }
