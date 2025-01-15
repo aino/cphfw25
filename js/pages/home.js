@@ -133,6 +133,9 @@ export default async function home(app) {
         let touchY = null
         let then = Date.now()
         let direction = null
+        const preventDefault = (e) => {
+          e.preventDefault()
+        }
 
         sidegallery.addEventListener('touchstart', (e) => {
           if (e.touches.length === 1) {
@@ -160,11 +163,15 @@ export default async function home(app) {
                 direction =
                   Math.abs(distanceX) > Math.abs(nextY - touchY) ? 'x' : 'y'
                 if (direction === 'x') {
-                  document.body.style.overflow = 'hidden'
+                  if (e.cancelable) {
+                    e.preventDefault()
+                  }
+                  addEventListener('scroll', preventDefault)
                 }
               }
               const nextVelX = distanceX / (now - then)
               velX = (velX + nextVelX) / 2
+              x += distanceX
 
               // Update positions
               touchX = nextX
@@ -179,17 +186,19 @@ export default async function home(app) {
           touchX = null
           touchY = null
           direction = null
-          document.body.style.overflow = ''
+          removeEventListener('scroll', preventDefault)
         })
         let lt = Date.now()
         const l = () => {
           const now = Date.now()
-          if (Math.abs(velX) > 0.05 || touchX !== null) {
-            velX *= 0.95
-          } else if (direction !== 'x') {
-            velX = sidegallery.dataset.direction == 'left' ? 0.05 : -0.05
+          if (!touchX) {
+            if (Math.abs(velX) > 0.05) {
+              velX *= 0.95
+            } else if (direction !== 'x') {
+              velX = sidegallery.dataset.direction == 'left' ? 0.05 : -0.05
+            }
+            x += velX * (now - lt)
           }
-          x += velX * (now - lt)
           if (x <= (edge + halfGap) * -1) {
             x = (halfGap + 1) * -1
           } else if (x > halfGap) {
@@ -293,7 +302,6 @@ export default async function home(app) {
     setTimeout(() => {
       centerButtonText.textContent = text
       centerButtonText.style.opacity = 1
-      centerButton.style.width = 'auto'
     }, 200)
   }
 
