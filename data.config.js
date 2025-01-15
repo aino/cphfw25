@@ -64,36 +64,108 @@ export const routes = {
           gallery: true,
           title: 'Guests',
           images: [
-            '/images/guest1.png',
-            '/images/guest2.png',
-            '/images/guest3.png',
-            '/images/guest1.png',
-            '/images/guest2.png',
-            '/images/guest3.png',
-            '/images/guest1.png',
-            '/images/guest2.png',
-            '/images/guest3.png',
-            '/images/guest1.png',
-            '/images/guest2.png',
-            '/images/guest3.png',
+            {
+              image: '/images/guest1.png',
+              hover: '/images/guest2.png',
+            },
+            {
+              image: '/images/guest2.png',
+              hover: '/images/guest3.png',
+            },
+            {
+              image: '/images/guest3.png',
+              hover: '/images/guest1.png',
+            },
+            {
+              image: '/images/guest1.png',
+              hover: '/images/guest2.png',
+            },
+            {
+              image: '/images/guest2.png',
+              hover: '/images/guest3.png',
+            },
+            {
+              image: '/images/guest3.png',
+              hover: '/images/guest1.png',
+            },
+            {
+              image: '/images/guest1.png',
+              hover: '/images/guest2.png',
+            },
+            {
+              image: '/images/guest2.png',
+              hover: '/images/guest3.png',
+            },
+            {
+              image: '/images/guest3.png',
+              hover: '/images/guest1.png',
+            },
+            {
+              image: '/images/guest1.png',
+              hover: '/images/guest2.png',
+            },
+            {
+              image: '/images/guest2.png',
+              hover: '/images/guest3.png',
+            },
+            {
+              image: '/images/guest3.png',
+              hover: '/images/guest1.png',
+            },
           ],
         },
         {
           gallery: true,
           title: 'Lookbook',
           images: [
-            '/images/team1.png',
-            '/images/team2.png',
-            '/images/team3.png',
-            '/images/team1.png',
-            '/images/team2.png',
-            '/images/team3.png',
-            '/images/team1.png',
-            '/images/team2.png',
-            '/images/team3.png',
-            '/images/team1.png',
-            '/images/team2.png',
-            '/images/team3.png',
+            {
+              image: '/images/team1.png',
+              hover: '/images/team2.png',
+            },
+            {
+              image: '/images/team2.png',
+              hover: '/images/team3.png',
+            },
+            {
+              image: '/images/team3.png',
+              hover: '/images/team1.png',
+            },
+            {
+              image: '/images/team1.png',
+              hover: '/images/team2.png',
+            },
+            {
+              image: '/images/team2.png',
+              hover: '/images/team3.png',
+            },
+            {
+              image: '/images/team3.png',
+              hover: '/images/team1.png',
+            },
+            {
+              image: '/images/team1.png',
+              hover: '/images/team2.png',
+            },
+            {
+              image: '/images/team2.png',
+              hover: '/images/team3.png',
+            },
+            {
+              image: '/images/team3.png',
+              hover: '/images/team1.png',
+            },
+            {
+              image: '/images/team1.png',
+              hover: '/images/team2.png',
+            },
+            {
+              image: '/images/team2.png',
+              hover: '/images/team3.png',
+            },
+            {
+              image: '/images/team3.png',
+              hover: '/images/team1.png',
+            },
           ],
         },
       ]

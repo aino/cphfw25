@@ -111,7 +111,7 @@ export default async function home(app) {
     let i = 0
     for (const image of q('.image img', images)) {
       image.style.opacity = 0
-      image.style.transitionDelay = `${i * 0.1}s`
+      image.style.transitionDelay = `${i * 0.04}s`
       i++
     }
   }
@@ -233,7 +233,9 @@ export default async function home(app) {
       : 0
     fakeDescription.style.width = width
     if (descriptionIsOpen) {
-      buttons.parentNode.style.transform = `translateY(${height / -2}px)`
+      buttons.parentNode.style.transform = `translate3d(-50%, ${
+        height / -2
+      }px, 0)`
     }
     style(description, { width, height })
   }
@@ -339,6 +341,7 @@ export default async function home(app) {
       const screenCenter = innerHeight / 2
 
       entries.forEach((entry) => {
+        console.log(entry.target, entry.isIntersecting)
         if (entry.isIntersecting) {
           entry.target.classList.add('inview')
           const rect = entry.target.getBoundingClientRect()

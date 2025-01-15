@@ -115,11 +115,27 @@ body.home {
         background: rgba(0, 0, 0, 0.1);
         flex: 1 1 calc(16.666% - 1px);
         display: block;
+        height: 0;
+        padding-bottom: 24%;
+        position: relative;
         img {
+          position: absolute;
+          top: 0;
+          left: 0;
           transition: opacity 0s ease;
           width: 100%;
           height: 100%;
           object-fit: cover;
+          &.hover {
+            visibility: hidden;
+            pointer-events: none;
+          }
+        }
+        &:hover {
+          img.hover {
+            pointer-events: all;
+            visibility: visible;
+          }
         }
       }
     }
@@ -225,10 +241,11 @@ body.home {
   }
   .barcontainer {
     position: fixed;
-    width: 100%;
+    width: fit-content;
     z-index: 3;
     top: calc(100vh / 2 - 2.4rem);
-    left: 0;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
     display: flex;
     align-items: center;
     flex-direction: column;
