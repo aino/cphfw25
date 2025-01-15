@@ -195,7 +195,9 @@ export default async function home(app) {
             if (Math.abs(velX) > 0.05) {
               velX *= 0.95
             } else if (direction !== 'x') {
-              velX = sidegallery.dataset.direction == 'left' ? 0.05 : -0.05
+              const targetVelX =
+                sidegallery.dataset.direction == 'left' ? 0.05 : -0.05
+              velX += (targetVelX - velX) * 0.1
             }
             x += velX * (now - lt)
           }
