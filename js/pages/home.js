@@ -15,6 +15,7 @@ import '@/styles/pages/home.css'
 const AUTOSCROLL_TIMEOUT = 5000
 
 const isTouch = 'ontouchstart' in window
+const isMobile = innerWidth < 600 && isTouch
 
 const isChrome =
   /Chrome\/[\d.]+/.test(navigator.userAgent) &&
@@ -317,9 +318,10 @@ export default async function home(app) {
       })
     }
     setGhostHeight()
-    scrollTo(0, innerHeight + 100)
+    const y = (isMobile ? screen.availHeight : innerHeight) + 100
+    scrollTo(0, y)
     if (fakeScroll) {
-      site.style.transform = `translateY(${-(innerHeight + 100)}px)`
+      site.style.transform = `translateY(${-y}px)`
     }
     buttons.classList.add('transition')
     requestAnimationFrame(() => {

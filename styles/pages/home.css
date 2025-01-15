@@ -319,6 +319,20 @@ body.home {
   }
 }
 
+@media (max-width: 800px) {
+  body.home {
+    .sidegallery {
+      .images {
+        gap: 5rem;
+        padding-left: 5rem;
+        .image {
+          min-width: 50vw !important;
+        }
+      }
+    }
+  }
+}
+
 /*
 @keyframes draw-circle {
   0% {
