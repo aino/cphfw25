@@ -94,22 +94,28 @@ export default async function home(app) {
     soundButton.innerText = `Sound: ${nextState ? 'On' : 'Off'}`
     if (nextState) {
       music.play()
-      animate({
-        duration: 500,
-        onFrame: (n) => {
-          music.volume = n
-        },
-      })
+      if (!isMobile) {
+        animate({
+          duration: 400,
+          onFrame: (n) => {
+            music.volume = n
+          },
+        })
+      }
     } else {
-      animate({
-        duration: 500,
-        onFrame: (n) => {
-          music.volume = 1 - n
-        },
-        onComplete: () => {
-          music.pause()
-        },
-      })
+      if (isMobile) {
+        music.pause()
+      } else {
+        animate({
+          duration: 400,
+          onFrame: (n) => {
+            music.volume = 1 - n
+          },
+          onComplete: () => {
+            music.pause()
+          },
+        })
+      }
     }
   })
 
