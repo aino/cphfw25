@@ -171,13 +171,14 @@ export default async function home(app) {
               }
               const nextVelX = distanceX / (now - then)
               velX = (velX + nextVelX) / 2
+              console.log({ nextVelX, distanceX, velX })
               x += distanceX
 
               // Update positions
               touchX = nextX
               touchY = nextY
-              then = now
             }
+            then = now
           },
           { passive: false } // Ensure preventDefault works
         )
