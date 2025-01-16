@@ -205,10 +205,11 @@ export default async function home(app) {
             }
             x += velX * (now - lt)
           }
+          console.log(x, edge, halfGap, x <= (edge + halfGap) * -1, x > halfGap)
           if (x <= (edge + halfGap) * -1) {
-            x = (halfGap + 1) * -1
+            x = halfGap * -1
           } else if (x > halfGap) {
-            x = (edge - halfGap - 1) * -1
+            x = (edge - halfGap) * -1
           }
           sidegallery.children[0].style.transform = `translateX(${x}px)`
           lt = now
