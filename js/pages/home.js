@@ -191,6 +191,10 @@ export default async function home(app) {
         let lt = Date.now()
         const l = () => {
           const now = Date.now()
+          console.log({
+            velX,
+            touchX,
+          })
           if (!touchX) {
             if (Math.abs(velX) > 0.05) {
               velX *= 0.95
