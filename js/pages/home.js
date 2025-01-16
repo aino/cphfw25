@@ -170,8 +170,10 @@ export default async function home(app) {
                 }
               }
               const nextVelX = distanceX / (now - then)
+              if (nextVelX === Infinity) {
+                console.log('WRONG', nextVelX, now, then, now - then, distanceX)
+              }
               velX = (velX + nextVelX) / 2
-              console.log({ nextVelX, distanceX, velX })
               x += distanceX
 
               // Update positions
