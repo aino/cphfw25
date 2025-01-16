@@ -60,14 +60,7 @@ body.home {
 
   .sidegallery {
     width: 100vw;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    overflow: hidden;
     .description {
       position: absolute;
       pointer-events: none;
