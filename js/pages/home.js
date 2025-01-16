@@ -122,7 +122,6 @@ export default async function home(app) {
     sidegallery.dataset.direction = i % 2 === 1 ? 'left' : 'right'
     const [images] = q('.images', sidegallery)
     let gap = parseFloat(getStyle(images, 'column-gap'))
-    console.log('GAP', gap, getComputedStyle(images))
     const halfGap = Math.floor(gap / 2)
     let edge = 0
     if (isTouch) {
