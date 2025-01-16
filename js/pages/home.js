@@ -415,22 +415,19 @@ export default async function home(app) {
         }
       }
       loop()
-      if (!isTouch) {
-        const activateScroll = () => {
-          return
-          then = Date.now()
-          autoscroll.set(true)
-          loop()
-        }
-        let autoscrollTimer = setTimeout(activateScroll, AUTOSCROLL_TIMEOUT)
-        const stopScroll = () => {
-          clearTimeout(autoscrollTimer)
-          autoscrollTimer = setTimeout(activateScroll, AUTOSCROLL_TIMEOUT)
-          autoscroll.set(false)
-        }
-        addEventListener('mousemove', stopScroll)
-        addEventListener('wheel', stopScroll)
+      const activateScroll = () => {
+        then = Date.now()
+        autoscroll.set(true)
+        loop()
       }
+      let autoscrollTimer = setTimeout(activateScroll, AUTOSCROLL_TIMEOUT)
+      const stopScroll = () => {
+        clearTimeout(autoscrollTimer)
+        autoscrollTimer = setTimeout(activateScroll, AUTOSCROLL_TIMEOUT)
+        autoscroll.set(false)
+      }
+      addEventListener('mousemove', stopScroll)
+      addEventListener('wheel', stopScroll)
     }
     setTimeout(scrollFrame, 600)
   }
