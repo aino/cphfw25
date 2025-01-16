@@ -87,8 +87,30 @@ export default async function home(app) {
   })
   buttons.appendChild(fakeButton)
 
-  const sound = state(true, (nextState) => {
+  const music = new Audio('/muffin.mp3')
+  music.volume = 0
+
+  const sound = state(false, (nextState) => {
     soundButton.innerText = `Sound: ${nextState ? 'On' : 'Off'}`
+    if (nextState) {
+      music.play()
+      animate({
+        duration: 500,
+        onFrame: (n) => {
+          music.volume = n
+        },
+      })
+    } else {
+      animate({
+        duration: 500,
+        onFrame: (n) => {
+          music.volume = 1 - n
+        },
+        onComplete: () => {
+          music.pause()
+        },
+      })
+    }
   })
 
   soundButton.addEventListener('click', () => {
@@ -96,7 +118,7 @@ export default async function home(app) {
   })
 
   animate({
-    duration: 300,
+    duration: 3300,
     onFrame: (n) => {
       progress.innerText = `Loading Radiant Connections ${Math.ceil(n * 100)}%`
     },
