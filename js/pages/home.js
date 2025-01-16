@@ -157,6 +157,10 @@ export default async function home(app) {
               const nextX = e.touches[0].clientX
               const nextY = e.touches[0].clientY
               const distanceX = nextX - touchX
+              const duration = now - then
+              if (!duration) {
+                return
+              }
 
               // Detect horizontal movement
               if (direction === null) {
@@ -169,10 +173,7 @@ export default async function home(app) {
                   addEventListener('scroll', preventDefault)
                 }
               }
-              const nextVelX = distanceX / (now - then)
-              if (nextVelX === Infinity) {
-                console.log('WRONG', nextVelX, now, then, now - then, distanceX)
-              }
+              const nextVelX = distanceX / duration
               velX = (velX + nextVelX) / 2
               x += distanceX
 
