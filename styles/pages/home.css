@@ -109,7 +109,7 @@ body.home {
       justify-content: space-between;
       .image {
         background: rgba(0, 0, 0, 0.1);
-        flex: 1 1 calc(16.666% - 1px);
+        flex: 1 1 calc(16.666%);
         display: block;
         height: 0;
         padding-bottom: 24%;
@@ -313,6 +313,9 @@ body.home {
       pointer-events: all;
     }
   }
+  .buttons .sound img {
+    display: none;
+  }
 }
 
 @media (max-width: 800px) {
@@ -328,6 +331,34 @@ body.home {
     }
     .buttons button.info span {
       display: none;
+    }
+    .buttons button.sound {
+      img {
+        display: block;
+        width: 16px;
+        height: 12px;
+        max-width: none;
+      }
+      span {
+        display: none;
+      }
+    }
+
+    .gallery {
+      .images {
+        .image {
+          flex: 1 1 100%;
+          padding-bottom: 75%;
+          img {
+            width: 50%;
+            &.hover {
+              left: 50%;
+              pointer-events: all !important;
+              visibility: visible !important;
+            }
+          }
+        }
+      }
     }
   }
 }

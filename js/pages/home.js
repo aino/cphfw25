@@ -91,7 +91,11 @@ export default async function home(app) {
   music.volume = 0
 
   const sound = state(false, (nextState) => {
-    soundButton.innerText = `Sound: ${nextState ? 'On' : 'Off'}`
+    soundButton.innerHTML = `<span>Sound: ${
+      nextState ? 'On' : 'Off'
+    } </span><img src="/images/sound-${
+      nextState ? 'on' : 'off'
+    }.svg" alt="Sound">`
     if (nextState) {
       music.play()
       if (!isMobile) {
@@ -124,7 +128,7 @@ export default async function home(app) {
   })
 
   animate({
-    duration: 3300,
+    duration: 300,
     onFrame: (n) => {
       progress.innerText = `Loading Radiant Connections ${Math.ceil(n * 100)}%`
     },
@@ -355,7 +359,7 @@ export default async function home(app) {
     const observerOptions = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.5,
+      threshold: 0.1,
     }
 
     const observerCallback = (entries) => {
@@ -422,6 +426,7 @@ export default async function home(app) {
       }
       loop()
       const activateScroll = () => {
+        return
         then = Date.now()
         autoscroll.set(true)
         loop()
