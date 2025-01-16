@@ -434,6 +434,7 @@ export default async function home(app) {
       }
       addEventListener('mousemove', stopScroll)
       addEventListener('wheel', stopScroll)
+      addEventListener('touchstart', stopScroll)
     }
     setTimeout(scrollFrame, 600)
   }
