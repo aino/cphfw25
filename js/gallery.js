@@ -1,3 +1,4 @@
+import { isTouch } from './pages/home'
 import { lerp, reverseLerp } from './utils/animate'
 import { q } from '@/js/utils/dom'
 
@@ -82,7 +83,7 @@ export default async function gallery(app) {
         item.style.paddingBottom = `${paddingBottom}%`
 
         // Set random speed for parallax movement
-        const randomSpeed = lerp(0, 10, Math.random())
+        const randomSpeed = lerp(0, 18, Math.random())
         item.dataset.speed = randomSpeed
 
         // Observe the item

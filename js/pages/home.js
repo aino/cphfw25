@@ -10,7 +10,7 @@ import { throttle } from '../utils/debounce'
 
 const AUTOSCROLL_TIMEOUT = 3000
 
-const isTouch = 'ontouchstart' in window
+export const isTouch = 'ontouchstart' in window
 export const isMobile = innerWidth < 600 && isTouch
 
 export const path = /^\/$/
