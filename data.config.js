@@ -7,7 +7,7 @@ export const routes = {
         {
           video: true,
           title: 'Radiant Connections',
-          background: '/hero.mp4',
+          background: '/hero2.mp4',
           description: `<h2>About Radiant Connections</h2><p>Radiant Connections explores the harmony between urban energy and natural
           simplicity. With clean silhouettes, layered textures, and a warm, earthy
           palette, the collection highlights the brand’s Scandinavian roots while
@@ -172,7 +172,7 @@ export const routes = {
 
       return {
         title: `Samsøe Samsøe CPHFW 2025`,
-        heroVideo: '/hero.mp4',
+        heroVideo: '/hero2.mp4',
         sections,
         name: 'Radiant Connections',
         description: `<h2>About Radiant Connections</h2><p>Radiant Connections explores the harmony between urban energy and natural

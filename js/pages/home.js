@@ -1,29 +1,17 @@
-import { smoothScroll, onScroll } from '@/js/utils/scroll'
-import {
-  create,
-  id,
-  createFromString,
-  q,
-  style,
-  getStyle,
-} from '@/js/utils/dom'
+import { create, id, createFromString, q, style } from '@/js/utils/dom'
 import animate from '@/js/utils/animate'
 import state from '@/js/utils/state'
-import EmblaCarousel from 'embla-carousel'
-import Autoscroll from 'embla-carousel-auto-scroll'
 
 import '@/styles/pages/home.css'
+import gallery from '../gallery'
+import sidegallery from '../sidegallery'
+import buttons from '../buttons'
+import { throttle } from '../utils/debounce'
 
-const AUTOSCROLL_TIMEOUT = 5000
+const AUTOSCROLL_TIMEOUT = 3000
 
 const isTouch = 'ontouchstart' in window
-const isMobile = innerWidth < 600 && isTouch
-
-const isChrome =
-  /Chrome\/[\d.]+/.test(navigator.userAgent) &&
-  !/Edg|OPR|Brave/.test(navigator.userAgent)
-
-const fakeScroll = false // isTouch && isChrome
+export const isMobile = innerWidth < 600 && isTouch
 
 export const path = /^\/$/
 
@@ -32,15 +20,17 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 export default async function home(app) {
   const site = id('site')
   const destroyers = []
-  const ghost = create('div')
   const sections = q('section', site)
   const hero = sections[0]
-  const [buttons] = q('.buttons', app)
   const autoscroll = state(false)
-  let infoIsOpen = false
-  let descriptionIsOpen = false
 
   let siteHeight = 0
+
+  const siteHeightObserver = new ResizeObserver(
+    () => (siteHeight = site.getBoundingClientRect().height)
+  )
+  siteHeightObserver.observe(site)
+
   const loader = createFromString(
     `
     <div class="loadercontainer">
@@ -57,75 +47,6 @@ export default async function home(app) {
   const progress = create('div', { class: 'progress' }, loader)
   const fader = create('div', { class: 'fader' }, site)
   const [video] = q('video', hero)
-  const [infoButton, centerButton, soundButton] = q('button', buttons)
-
-  infoButton.addEventListener('click', () => {
-    // if (fakeScroll) {
-    //   scrollTo(0, innerHeight + 100)
-    // } else {
-    //   smoothScroll({
-    //     to: innerHeight + 100,
-    //     duration: 500,
-    //   })
-    // }
-    infoIsOpen = !infoIsOpen
-    if (infoIsOpen) {
-      openDescription(
-        '<h2>About CPHFW</h2><p>With a nod to its Scandinavian heritage, Samsøe Samsøe is defined by a wearable aesthetic that combines the utilitarian ease of Copenhagen street style with a quintessentially Scandinavian spirit. Collections transcend trends, drawing on Denmark’s renowned design tradition to result in minimalist, affordable and accessible fashion.</p>'
-      )
-    } else {
-      closeDescription()
-    }
-  })
-
-  const centerButtonText = centerButton.children[0]
-  const fakeButton = centerButton.cloneNode(true)
-  style(fakeButton, {
-    position: 'absolute',
-    opacity: 0,
-    pointerEvents: 'none',
-  })
-  buttons.appendChild(fakeButton)
-
-  const music = new Audio('/muffin.mp3')
-  music.volume = 0
-
-  const sound = state(false, (nextState) => {
-    soundButton.innerHTML = `<span>Sound: ${
-      nextState ? 'On' : 'Off'
-    } </span><img src="/images/sound-${
-      nextState ? 'on' : 'off'
-    }.svg" alt="Sound">`
-    if (nextState) {
-      music.play()
-      if (!isMobile) {
-        animate({
-          duration: 400,
-          onFrame: (n) => {
-            music.volume = n
-          },
-        })
-      }
-    } else {
-      if (isMobile) {
-        music.pause()
-      } else {
-        animate({
-          duration: 400,
-          onFrame: (n) => {
-            music.volume = 1 - n
-          },
-          onComplete: () => {
-            music.pause()
-          },
-        })
-      }
-    }
-  })
-
-  soundButton.addEventListener('click', () => {
-    sound.set(!sound.value)
-  })
 
   animate({
     duration: 300,
@@ -140,59 +61,14 @@ export default async function home(app) {
     },
   })
 
-  const sideGalleries = q('.sidegallery', site)
+  const { container, centerButtonState, destroy, descriptionState } = buttons(
+    app,
+    () => activeSection
+  )
 
-  for (const images of q('.gallery .images', site)) {
-    let i = 0
-    for (const image of q('.image img', images)) {
-      image.style.opacity = 0
-      image.style.transitionDelay = `${i * 0.04}s`
-      i++
-    }
-  }
-
-  sideGalleries.forEach((sidegallery, i) => {
-    const [images] = q('.images', sidegallery)
-    for (const image of q('.image', images)) {
-      images.appendChild(image.cloneNode(true))
-    }
-    const autoscroll = Autoscroll({
-      speed: 1,
-      startDelay: 0,
-      stopOnInteraction: false,
-      direction: i % 2 ? 'backward' : 'forward',
-    })
-    const embla = EmblaCarousel(
-      sidegallery,
-      {
-        loop: true,
-        dragFree: true,
-      },
-      [autoscroll]
-    )
-
-    let isTouching = false
-    let prevVelocity = null
-
-    embla.on('pointerDown', () => {
-      isTouching = true
-    })
-
-    embla.on('pointerUp', () => {
-      isTouching = false
-    })
-
-    embla.on('scroll', () => {
-      const velocity = embla.internalEngine().scrollBody.velocity()
-      if (prevVelocity !== null && !isTouching) {
-        const isSlowingDown = Math.abs(velocity) < Math.abs(prevVelocity)
-        if (isSlowingDown && Math.abs(velocity) < 1) {
-          autoscroll.play()
-        }
-      }
-      prevVelocity = velocity
-    })
-  })
+  destroyers.push(gallery(app))
+  destroyers.push(sidegallery(app))
+  destroyers.push(destroy)
 
   Promise.all([
     wait(500),
@@ -209,209 +85,69 @@ export default async function home(app) {
   })
   let activeSection = null
 
-  const setGhostHeight = () => {
-    const { height } = site.getBoundingClientRect()
-    ghost.style.height = `${height}px`
-    siteHeight = height
-  }
-  const resizeObserver = new ResizeObserver(() => {
-    setGhostHeight()
-  })
-  setGhostHeight()
-  resizeObserver.observe(site)
-
-  function animateButton(text) {
-    if (fakeButton.children[0].textContent === text) {
-      return
-    }
-    if (!infoIsOpen) {
-      // closeDescription()
-    }
-    centerButtonText.style.opacity = 0
-    fakeButton.children[0].textContent = text
-    const newWidth = fakeButton.getBoundingClientRect().width
-    centerButton.style.width = `${newWidth}px`
-    setTimeout(() => {
-      centerButtonText.textContent = text
-      centerButtonText.style.opacity = 1
-    }, 200)
-  }
-
-  const description = create('div', { class: 'description' })
-  const descriptionText = create(
-    'div',
-    { class: 'description-text' },
-    description
-  )
-  const fakeDescription = description.cloneNode(true)
-  style(fakeDescription, {
-    position: 'absolute',
-    opacity: 0,
-    pointerEvents: 'none',
-    overflow: 'visible',
-    height: 'auto',
-  })
-
-  const resizeDescription = () => {
-    const width = `${buttons.getBoundingClientRect().width}px`
-    const height = descriptionIsOpen
-      ? fakeDescription.getBoundingClientRect().height
-      : 0
-    fakeDescription.style.width = width
-    if (descriptionIsOpen) {
-      buttons.parentNode.style.transform = `translate3d(-50%, ${
-        height / -2
-      }px, 0)`
-    }
-    style(description, { width, height })
-  }
-
-  const buttonsObserver = new ResizeObserver(resizeDescription)
-
-  buttonsObserver.observe(buttons)
-
-  buttons.after(description)
-  buttons.after(fakeDescription)
-
-  function openDescription(html) {
-    if (!html) {
-      closeDescription()
-      return
-    }
-    description.style.height = '0px'
-    descriptionText.style.opacity = 0
-    fakeDescription.children[0].innerHTML = html
-    const newHeight = fakeDescription.getBoundingClientRect().height
-    if (descriptionIsOpen) {
-      setTimeout(() => {
-        descriptionIsOpen = true
-        descriptionText.innerHTML = html
-        descriptionText.style.opacity = 1
-        description.style.height = `${newHeight}px`
-      }, 300)
-    } else {
-      descriptionIsOpen = true
-      descriptionText.innerHTML = html
-      description.style.height = `${newHeight}px`
-      setTimeout(() => {
-        descriptionText.style.opacity = 1
-      }, 400)
-    }
-    resizeDescription()
-  }
-
-  function closeDescription() {
-    if (!descriptionIsOpen) {
-      return
-    }
-    descriptionIsOpen = false
-    description.style.height = '0px'
-    descriptionText.style.opacity = 0
-    buttons.parentNode.style.transform = ''
-  }
-
-  centerButton.addEventListener('click', () => {
-    if (activeSection.classList.contains('footer')) {
-      open('https://samsoe.com')
-      return
-    }
-    if (descriptionIsOpen && !infoIsOpen) {
-      closeDescription()
-    } else {
-      infoIsOpen = false
-      if (activeSection) {
-        const [desc] = q('.description', activeSection)
-        if (desc) {
-          openDescription(desc.innerHTML)
-        }
-      }
-    }
-  })
-
   function start() {
     const spacerTop = create('div', { class: 'spacer' })
     const spacerBottom = spacerTop.cloneNode(true)
     site.appendChild(spacerBottom)
     site.prepend(spacerTop)
-    if (fakeScroll) {
-      site.before(ghost)
-    } else {
-      style(site, {
-        position: 'relative',
-      })
-    }
-    setGhostHeight()
+    style(site, {
+      position: 'relative',
+    })
     const y = (isMobile ? screen.availHeight : innerHeight) + 100
     scrollTo(0, y)
-    if (fakeScroll) {
-      site.style.transform = `translateY(${-y}px)`
-    }
-    buttons.classList.add('transition')
+    container.classList.add('transition')
     requestAnimationFrame(() => {
-      buttons.classList.add('show')
+      container.classList.add('show')
       requestAnimationFrame(() => {
-        style(centerButton, {
-          width: `${centerButton.getBoundingClientRect().width}px`,
-          transitionDelay: '0s',
-        })
+        container.classList.add('done')
       })
     })
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1,
-    }
 
-    const observerCallback = (entries) => {
+    const throttledScrollHandler = throttle(() => {
       let closestSection = null
-      let closestDistance = Infinity
-      const screenCenter = innerHeight / 2
+      let smallestDistanceToCenter = Infinity
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect()
+        const distanceToCenter = Math.abs(
+          rect.top + rect.height / 2 - window.innerHeight / 2
+        )
 
-      entries.forEach((entry) => {
-        console.log(entry.target, entry.isIntersecting)
-        if (entry.isIntersecting) {
-          entry.target.classList.add('inview')
-          const rect = entry.target.getBoundingClientRect()
-          const sectionCenter = rect.top + rect.height / 2
-          const distanceToCenter = Math.abs(sectionCenter - screenCenter)
-
-          if (distanceToCenter < closestDistance) {
-            closestSection = entry.target
-            closestDistance = distanceToCenter
-          }
+        // Find the section closest to the center of the viewport
+        if (distanceToCenter < smallestDistanceToCenter) {
+          smallestDistanceToCenter = distanceToCenter
+          closestSection = section
         }
-      })
-
-      if (closestSection && activeSection !== closestSection) {
+      }
+      if (closestSection !== activeSection) {
         activeSection = closestSection
         let title = activeSection.dataset.title
         if (!title && activeSection.classList.contains('footer')) {
           title = 'Visit shop'
         }
-        animateButton(title)
-
-        if (descriptionIsOpen) {
-          const [desc] = q('.description', activeSection)
-          if (desc) {
-            openDescription(desc.innerHTML)
-          } else {
-            closeDescription()
-          }
+        centerButtonState.set(title)
+        const [desc] = q('.description', activeSection)
+        if (descriptionState.value?.type === 'description') {
+          descriptionState.set({
+            type: 'description',
+            content: desc?.innerHTML || '',
+          })
         }
       }
-    }
+    }, 200)
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions)
-    sections.forEach((section) => observer.observe(section))
     const scrollHandler = () => {
       if (scrollY < 100) {
         scrollTo(0, siteHeight - innerHeight - 100)
       } else if (scrollY > siteHeight - innerHeight - 100) {
         scrollTo(0, 100)
       }
+      throttledScrollHandler()
     }
 
     addEventListener('scroll', scrollHandler)
+    destroyers.push(() => {
+      removeEventListener('scroll', scrollHandler)
+    })
 
     const scrollFrame = () => {
       let then = Date.now()
@@ -426,7 +162,6 @@ export default async function home(app) {
       }
       loop()
       const activateScroll = () => {
-        return
         then = Date.now()
         autoscroll.set(true)
         loop()
@@ -440,6 +175,11 @@ export default async function home(app) {
       addEventListener('mousemove', stopScroll)
       addEventListener('wheel', stopScroll)
       addEventListener('touchstart', stopScroll)
+      destroyers.push(() => {
+        removeEventListener('mousemove', stopScroll)
+        removeEventListener('wheel', stopScroll)
+        removeEventListener('touchstart', stopScroll)
+      })
     }
     setTimeout(scrollFrame, 600)
   }

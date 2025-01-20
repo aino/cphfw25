@@ -107,12 +107,27 @@ body.home {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      align-items: center;
       .image {
         background: rgba(0, 0, 0, 0.1);
-        flex: 1 1 calc(16.666%);
+        flex: 1 1 calc(15%);
         display: block;
         height: 0;
-        padding-bottom: 24%;
+        padding-bottom: 20%;
+        transition: transform 0.4s ease-out;
+        /* margin-bottom: -10%; */
+        &.i-0 {
+          flex: 1 1 calc(20%);
+          padding-bottom: 30%;
+        }
+        &.i-2 {
+          flex: 1 1 calc(35%);
+          padding-bottom: 50%;
+        }
+        &.i-3 {
+          flex: 1 1 calc(30%);
+          padding-bottom: 40%;
+        }
         position: relative;
         img {
           position: absolute;
@@ -123,22 +138,16 @@ body.home {
           height: 100%;
           object-fit: cover;
           &.hover {
-            visibility: hidden;
+            transition: opacity 0.2s ease;
+            opacity: 0;
             pointer-events: none;
           }
         }
-        &:hover {
+        &.over {
           img.hover {
             pointer-events: all;
-            visibility: visible;
+            opacity: 1;
           }
-        }
-      }
-    }
-    &.inview {
-      .images {
-        .image img {
-          opacity: 1 !important;
         }
       }
     }
@@ -254,7 +263,7 @@ body.home {
     margin-top: 0.4rem;
     height: 0;
     overflow: hidden;
-    transition: height 0.3s var(--easeInOut);
+    transition: height 0.4s var(--easeInOut);
     > div {
       margin: 2rem;
       transition: opacity 0.2s ease-out;
@@ -312,8 +321,11 @@ body.home {
       opacity: 1;
       pointer-events: all;
     }
+    &.done button {
+      transition-delay: 0s !important;
+    }
   }
-  .buttons .sound img {
+  .buttons .sound svg {
     display: none;
   }
 }
@@ -333,11 +345,14 @@ body.home {
       display: none;
     }
     .buttons button.sound {
-      img {
+      svg {
         display: block;
-        width: 16px;
-        height: 12px;
+        width: 1.6rem;
+        height: 1.6rem;
         max-width: none;
+        path {
+          stroke: var(--lime);
+        }
       }
       span {
         display: none;
