@@ -49,7 +49,7 @@ export default async function home(app) {
   const [video] = q('video', hero)
 
   animate({
-    duration: 300,
+    duration: 3300,
     onFrame: (n) => {
       progress.innerText = `Loading Radiant Connections ${Math.ceil(n * 100)}%`
     },
