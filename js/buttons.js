@@ -98,7 +98,11 @@ export default function buttons(app, getActiveSection) {
     }
   })
 
-  const music = new Audio('/muffin.mp3')
+  const [audio] = q('audio source', app)
+  const src = audio.getAttribute('src')
+
+  const music = new Audio(src)
+  music.loop = true
   music.volume = 0
 
   const renderSoundButton = (nextState) => {

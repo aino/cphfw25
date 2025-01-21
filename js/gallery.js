@@ -47,6 +47,7 @@ export default async function gallery(app) {
     {
       root: null, // Use viewport as root
       threshold: 0, // Trigger as soon as it enters
+      rootMargin: '100px',
     }
   )
 

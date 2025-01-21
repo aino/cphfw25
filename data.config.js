@@ -49,14 +49,19 @@ export const routes = {
             '<h2>Discover the future of color</h2><p>Experience the latest trends and styles in our immersive exhibition space.</p>',
           images: [
             {
-              title: 'Our mission',
-              description: 'We are on a mission to bring color to the world.',
-              image: '/images/oct1.png',
+              image: '/images/Samsøe_Samsøe_Octarine_Content_Landing_Page.jpg',
             },
             {
-              title: 'Our mission',
-              description: 'We are on a mission to bring color to the world.',
-              image: '/images/oct2.png',
+              image: '/images/Samsøe_Samsøe_Octarine_Content_Landing_Page2.jpg',
+            },
+            {
+              image: '/images/Samsøe_Samsøe_Octarine_Content_Landing_Page3.jpg',
+            },
+            {
+              image: '/images/Samsøe_Samsøe_Octarine_Content_Landing_Page5.jpg',
+            },
+            {
+              image: '/images/Samsøe_Samsøe_Octarine_Content_Landing_Page6.jpg',
             },
           ],
         },
@@ -175,6 +180,7 @@ export const routes = {
         heroVideo: '/hero2.mp4',
         sections,
         name: 'Radiant Connections',
+        audio: '/SAMSOE_CPHFW_AUDIO_FOR_WEB_1min.mp3',
         description: `<h2>About Radiant Connections</h2><p>Radiant Connections explores the harmony between urban energy and natural
           simplicity. With clean silhouettes, layered textures, and a warm, earthy
           palette, the collection highlights the brand’s Scandinavian roots while

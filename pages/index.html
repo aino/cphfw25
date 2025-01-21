@@ -1,8 +1,15 @@
 {{#> layout bodyclass="home" }}
+<div class="introduction">
+  <h1>{{ title }}</h1>
+  <div class="description">{{{ description }}}</div>
+  <audio>
+    <source src="{{ audio }}" type="audio/wav" loop />
+  </audio>
+</div>
 <div class="barcontainer">
   <div class="buttons">
     <button class="info"><span>Samsøe Samsøe </span>CPHFW’25</button>
-    <button class="center"><span>{{ showTitle }}</span></button>
+    <button class="center"><span>{{ name }}</span></button>
   </div>
 </div>
 <div id="site">

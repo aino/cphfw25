@@ -37,6 +37,11 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+::selection {
+  color: var(--black);
+  background: var(--lime);
+}
+
 body {
   margin: 0;
   padding: 0;
