@@ -181,12 +181,7 @@ export const routes = {
         sections,
         name: 'Radiant Connections',
         audio: '/SAMSOE_CPHFW_AUDIO_FOR_WEB_1min.mp3',
-        description: `<h2>About Radiant Connections</h2><p>Radiant Connections explores the harmony between urban energy and natural
-          simplicity. With clean silhouettes, layered textures, and a warm, earthy
-          palette, the collection highlights the brand’s Scandinavian roots while
-          introducing innovative, sustainable materials. Radiant Connections
-          reflects modern Nordic fashion with timeless, understated pieces designed
-          for effortless expression.</p>`,
+        description: `<h2>About CPHFW</h2><p>With a nod to its Scandinavian heritage, Samsøe Samsøe is defined by a wearable aesthetic that combines the utilitarian ease of Copenhagen street style with a quintessentially Scandinavian spirit. Collections transcend trends, drawing on Denmark’s renowned design tradition to result in minimalist, affordable and accessible fashion.</p>`,
       }
     },
   },

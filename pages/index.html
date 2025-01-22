@@ -1,15 +1,14 @@
 {{#> layout bodyclass="home" }}
-<div class="introduction">
-  <h1>{{ title }}</h1>
-  <div class="description">{{{ description }}}</div>
-  <audio>
-    <source src="{{ audio }}" type="audio/wav" loop />
-  </audio>
-</div>
+<audio>
+  <source src="{{ audio }}" type="audio/wav" loop />
+</audio>
 <div class="barcontainer">
   <div class="buttons">
     <button class="info"><span>Samsøe Samsøe </span>CPHFW’25</button>
     <button class="center"><span>{{ name }}</span></button>
+  </div>
+  <div class="description">
+    <div class="description-text">{{{ description }}}</div>
   </div>
 </div>
 <div id="site">
@@ -18,7 +17,7 @@
     <video autoplay loop muted playsinline>
       <source src="{{ background }}" type="video/mp4" />
     </video>
-    <div class="description">{{{ description }}}</div>
+    <div class="section-description">{{{ description }}}</div>
   </section>
   {{/if }} {{#if sideGallery }}
   <section class="sidegallery" data-title="{{ title }}">
@@ -33,12 +32,12 @@
       </div>
       {{/each }}
     </div>
-    <div class="description">{{{ description }}}</div>
+    <div class="section-description">{{{ description }}}</div>
   </section>
   {{/if }} {{#if image }}
   <section class="image" data-title="{{ title }}">
     <img {{ img background }} />
-    <div class="description">{{{ description }}}</div>
+    <div class="section-description">{{{ description }}}</div>
   </section>
   {{/if }} {{#if gallery }}
   <section class="gallery" data-title="{{ title }}">
@@ -50,7 +49,7 @@
       </div>
       {{/each }}
     </div>
-    <div class="description">{{{ description }}}</div>
+    <div class="section-description">{{{ description }}}</div>
   </section>
   {{/if }} {{/each }}
   <section class="footer">

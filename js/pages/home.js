@@ -125,7 +125,7 @@ export default async function home(app) {
           title = 'Visit shop'
         }
         centerButtonState.set(title)
-        const [desc] = q('.description', activeSection)
+        const [desc] = q('.section-description', activeSection)
         if (descriptionState.value?.type === 'description') {
           descriptionState.set({
             type: 'description',

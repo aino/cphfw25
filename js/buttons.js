@@ -34,12 +34,8 @@ export default function buttons(app, getActiveSection) {
   })
   container.appendChild(fakeButton)
 
-  const description = create('div', { class: 'description' })
-  const descriptionText = create(
-    'div',
-    { class: 'description-text' },
-    description
-  )
+  const description = container.nextElementSibling
+  const descriptionText = description.children[0]
   const fakeDescription = description.cloneNode(true)
   style(fakeDescription, {
     position: 'absolute',
@@ -174,7 +170,7 @@ export default function buttons(app, getActiveSection) {
     if (descriptionState.value?.type === 'description') {
       descriptionState.set(null)
     } else if (activeSection) {
-      const [desc] = q('.description', activeSection)
+      const [desc] = q('.section-description', activeSection)
       if (desc?.innerHTML) {
         descriptionState.set({
           type: 'description',
