@@ -68,6 +68,8 @@ export const routes = {
         {
           gallery: true,
           title: 'Guests',
+          description:
+            '<h2>Our guests</h2><p>Lorem ipsum dorem ipsum dorem ipsum dorem ipsum dorem </p><h2>Download assets</h2><p><a href="https://google.com" target="_blank">Media Bank Portal</a></p>',
           images: [
             {
               image: '/images/guest1.png',
