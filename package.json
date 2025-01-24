@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 4666",
-    "code": "vercel --local-config vercel.dev.json dev --listen 4666",
+    "dev": "vite --port 4667",
+    "code": "vercel --local-config vercel.dev.json dev --listen 4667",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -31,6 +31,7 @@
     "embla-carousel-auto-scroll": "^8.5.2",
     "embla-carousel-autoplay": "^8.5.2",
     "lottie-web-light": "^1.1.0",
-    "lz-string": "^1.5.0"
+    "lz-string": "^1.5.0",
+    "marked": "^15.0.6"
   }
 }

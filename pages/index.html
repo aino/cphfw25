@@ -1,6 +1,6 @@
 {{#> layout bodyclass="home" }}
 <audio>
-  <source src="{{ audio }}" type="audio/wav" loop />
+  <source src="{{ sound }}" type="audio/wav" loop />
 </audio>
 <div class="barcontainer">
   <div class="buttons">
@@ -19,7 +19,7 @@
     </video>
     <div class="section-description">{{{ description }}}</div>
   </section>
-  {{/if }} {{#if sideGallery }}
+  {{/if }} {{#if sidegallery }}
   <section class="sidegallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}

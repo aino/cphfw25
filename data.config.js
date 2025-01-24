@@ -1,8 +1,45 @@
+import { marked } from 'marked'
+
 export const locales = ['en']
+
+const getAssetUrl = (url) => (url.startsWith('//') ? `https:${url}` : url)
 
 export const routes = {
   '/': {
     data: async ({ lang }) => {
+      const response = await fetch('http://samsoe.com/api/admin/cphfw')
+      const fromApi = await response.json()
+
+      fromApi.description = marked(fromApi.description || '')
+      fromApi.sound = getAssetUrl(fromApi.sound?.url || '')
+
+      for (const section of fromApi.sections) {
+        if (section.type === 'video') {
+          section.background = getAssetUrl(section.video.url)
+        } else if (section.type === 'image') {
+          section.background = getAssetUrl(section.image.url)
+        } else if (section.type === 'sidegallery') {
+          const nextImages = section.images.map((image) => ({
+            image: getAssetUrl(image.image.url),
+            title: image.title || '',
+            description: marked(image.description || ''),
+          }))
+          delete section.video
+          section.images = nextImages
+        } else if (section.type === 'gallery') {
+          const nextImages = section.images.map((image) => ({
+            image: getAssetUrl(image.image.url),
+            hover: getAssetUrl(image.hover.url),
+          }))
+          console.log(nextImages)
+          section.images = nextImages
+        }
+        section[section.type] = true
+        section.description = marked(section.description || '')
+      }
+
+      return fromApi
+
       const sections = [
         {
           video: true,
@@ -179,7 +216,6 @@ export const routes = {
 
       return {
         title: `Samsøe Samsøe CPHFW 2025`,
-        heroVideo: '/hero2.mp4',
         sections,
         name: 'Radiant Connections',
         audio: '/SAMSOE_CPHFW_AUDIO_FOR_WEB_1min.mp3',
