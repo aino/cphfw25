@@ -34,7 +34,7 @@ export const routes = {
           console.log(nextImages)
           section.images = nextImages
         }
-        section[section.type] = true
+        section[`type_${section.type}`] = true
         section.description = marked(section.description || '')
       }
 
