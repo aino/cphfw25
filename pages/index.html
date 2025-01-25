@@ -12,14 +12,14 @@
   </div>
 </div>
 <div id="site">
-  {{#each sections }} {{#if video}}
+  {{#each sections }} {{#if type_video}}
   <section class="video" data-title="{{ title }}">
     <video autoplay loop muted playsinline>
       <source src="{{ background }}" type="video/mp4" />
     </video>
     <div class="section-description">{{{ description }}}</div>
   </section>
-  {{/if }} {{#if sidegallery }}
+  {{/if }} {{#if type_sidegallery }}
   <section class="sidegallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}
@@ -34,9 +34,9 @@
     </div>
     <div class="section-description">{{{ description }}}</div>
   </section>
-  {{/if }} {{#if image }}
+  {{/if }} {{#if type_image }}
   <section class="image" data-title="{{ title }}">
-    <img {{ img background }} />
+    <img {{ img type_background }} />
     <div class="section-description">{{{ description }}}</div>
   </section>
   {{/if }} {{#if gallery }}
