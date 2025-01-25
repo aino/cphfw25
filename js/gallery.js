@@ -33,6 +33,7 @@ const generateRandomFlex = (rowSize) => {
 }
 
 export default async function gallery(app) {
+  return
   // Create an IntersectionObserver to track visibility
   const observer = new IntersectionObserver(
     (entries) => {
