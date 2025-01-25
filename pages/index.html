@@ -36,10 +36,10 @@
   </section>
   {{/if }} {{#if type_image }}
   <section class="image" data-title="{{ title }}">
-    <img {{ img type_background }} />
+    <img {{ img background }} />
     <div class="section-description">{{{ description }}}</div>
   </section>
-  {{/if }} {{#if gallery }}
+  {{/if }} {{#if type_gallery }}
   <section class="gallery" data-title="{{ title }}">
     <div class="images">
       {{#each images }}

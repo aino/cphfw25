@@ -24,6 +24,7 @@ export const routes = {
             title: image.title || '',
             description: marked(image.description || ''),
           }))
+          console.log(nextImages)
           delete section.video
           section.images = nextImages
         } else if (section.type === 'gallery') {
