@@ -82,6 +82,8 @@ export default function buttons(app, getActiveSection) {
     }, 200)
   })
 
+  centerButton.style.width = `${centerButton.offsetWidth}px`
+
   infoButton.addEventListener('click', () => {
     if (descriptionState.value?.type === 'info') {
       descriptionState.set(null)
