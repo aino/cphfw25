@@ -48,7 +48,9 @@
       {{#each images }}
       <div class="image">
         <img {{img image }} />
+        {{#if hover }}
         <img class="hover" {{img hover }} />
+        {{/ if }}
       </div>
       {{/each }}
     </div>

@@ -1,14 +1,5 @@
 # White
 
-## Why
-
-- **Reactive frameworks** are great for reactive UI but often add unnecessary **bloat and boilerplate** for websites that don’t need it.
-- Most websites rely on **URLs, navigation, and lightweight HTML**. Pages are not global states of data — only parts like forms, carts, or modals might need reactivity.
-- **Native JavaScript and DOM APIs** are standardized, efficient, and often overlooked despite offering **better performance** with less code.
-- React’s abstractions (e.g., states, events, and its event system) make it easy to forget how the **DOM really works**.
-- By **separating markup from scripts**, developers are encouraged to think more carefully about the HTML, leading to cleaner and more focused client-side JavaScript.
-- Coding “the React way” can make you miss the **elegance and simplicity** already built into **native JavaScript** and the DOM.
-
 ## Get Started
 
 1. Clone the repository.
@@ -152,7 +143,7 @@ export default function () {
 
 #### `img`
 
-Use `img` to dynamically generate `src` and `srcset` attributes based on images in the `public` folder:
+Use `img` to dynamically generate `src` and `srcset` attributes:
 
 ```hbs
 <img {{img '/images/about/about1.jpg'}} alt='About Aino' />
