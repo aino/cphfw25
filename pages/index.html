@@ -11,7 +11,7 @@
     <div class="description-text">{{{ description }}}</div>
   </div>
 </div>
-<div id="site">
+<div id="site" data-loadingmessage="{{ loadingmessage }}">
   {{#each sections }} {{#if type_video}}
   <section class="video" data-title="{{ title }}">
     <video autoplay loop muted playsinline>
@@ -36,7 +36,10 @@
   </section>
   {{/if }} {{#if type_image }}
   <section class="image" data-title="{{ title }}">
-    <img {{ img background }} />
+    <img {{ img background }}{{# if mobile }}class="desktop"{{/ if }} /> {{# if
+    mobile }}
+    <img class="mobile" {{ img mobile }} />
+    {{/ if }}
     <div class="section-description">{{{ description }}}</div>
   </section>
   {{/if }} {{#if type_gallery }}

@@ -53,6 +53,9 @@ body.home {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      &.mobile {
+        display: none;
+      }
     }
   }
 
@@ -366,6 +369,14 @@ html.js body.home {
         .image {
           min-width: 80vw !important;
         }
+      }
+    }
+    section.image {
+      img.desktop {
+        display: none;
+      }
+      img.mobile {
+        display: block !important;
       }
     }
     .barcontainer {

@@ -18,6 +18,9 @@ export const routes = {
           section.background = getAssetUrl(section.video.url)
         } else if (section.type === 'image') {
           section.background = getAssetUrl(section.image.url)
+          if (section.mobile) {
+            section.mobile = getAssetUrl(section.mobile.url)
+          }
         } else if (section.type === 'sidegallery') {
           const nextImages = section.images.map((image) => ({
             image: getAssetUrl(image.image.url),

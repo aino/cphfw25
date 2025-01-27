@@ -47,11 +47,12 @@ export default async function home(app) {
   const progress = create('div', { class: 'progress' }, loader)
   const fader = create('div', { class: 'fader' }, site)
   const [video] = q('video', hero)
+  const loadingmessage = site.dataset.loadingmessage || 'Loading'
 
   animate({
     duration: 3300,
     onFrame: (n) => {
-      progress.innerText = `Loading Radiant Connections ${Math.ceil(n * 100)}%`
+      progress.innerText = `${loadingmessage} ${Math.ceil(n * 100)}%`
     },
     onComplete: () => {
       fader.classList.add('out')
