@@ -27,15 +27,13 @@ export const routes = {
             title: image.title || '',
             description: marked(image.description || ''),
           }))
-          console.log(nextImages)
           delete section.video
           section.images = nextImages
         } else if (section.type === 'gallery') {
           const nextImages = section.images.map((image) => ({
             image: getAssetUrl(image.image.url),
-            hover: getAssetUrl(image.hover.url),
+            hover: image.hover ? getAssetUrl(image.hover.url) : undefined,
           }))
-          console.log(nextImages)
           section.images = nextImages
         }
         section[`type_${section.type}`] = true
