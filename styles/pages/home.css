@@ -344,7 +344,7 @@ html.js body.home {
   .gallery {
     .images {
       .image {
-        margin-bottom: 40vh;
+        /* margin-bottom: 40vh; */
       }
     }
   }
