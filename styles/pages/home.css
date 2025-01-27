@@ -350,6 +350,10 @@ html.js body.home {
   }
   .sidegallery {
     overflow: hidden;
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
   }
 }
 
@@ -406,22 +410,19 @@ html.js body.home {
       .images {
         display: flex;
         .image {
-          flex: 1 1 100% !important;
+          flex: 1 1 50% !important;
           padding-bottom: 75% !important;
           transform: none !important;
           margin-bottom: 0 !important;
           img {
-            width: 50%;
+            width: 100%;
             &.hover {
-              left: 50%;
-              pointer-events: all !important;
-              visibility: visible !important;
-              opacity: 1 !important;
+              display: none;
             }
           }
           &:nth-child(even) {
             img {
-              left: 50%;
+              /* left: 50%; */
               &.hover {
                 left: 0;
               }

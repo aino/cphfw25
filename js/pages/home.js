@@ -87,15 +87,19 @@ export default async function home(app) {
   let activeSection = null
 
   function start() {
-    const spacerTop = create('div', { class: 'spacer' })
-    const spacerBottom = spacerTop.cloneNode(true)
-    site.appendChild(spacerBottom)
-    site.prepend(spacerTop)
+    if (!isTouch) {
+      const spacerTop = create('div', { class: 'spacer' })
+      const spacerBottom = spacerTop.cloneNode(true)
+      site.appendChild(spacerBottom)
+      site.prepend(spacerTop)
+    }
     style(site, {
       position: 'relative',
     })
-    const y = (isMobile ? screen.availHeight : innerHeight) + 100
-    scrollTo(0, y)
+    if (!isTouch) {
+      const y = (isMobile ? screen.availHeight : innerHeight) + 100
+      scrollTo(0, y)
+    }
     container.classList.add('transition')
     requestAnimationFrame(() => {
       container.classList.add('show')
@@ -109,15 +113,29 @@ export default async function home(app) {
       let smallestDistanceToCenter = Infinity
       for (const section of sections) {
         const rect = section.getBoundingClientRect()
-        const distanceToCenter = Math.abs(
-          rect.top + rect.height / 2 - window.innerHeight / 2
-        )
+        const viewportCenter = window.innerHeight / 2
+
+        let distanceToCenter
+
+        // If the viewport center is within the section, treat it as overlapping
+        if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
+          distanceToCenter = 0 // Prioritize overlapping sections
+        } else {
+          // Otherwise, calculate the distance from the closest edge of the section
+          distanceToCenter = Math.min(
+            Math.abs(rect.top - viewportCenter),
+            Math.abs(rect.bottom - viewportCenter)
+          )
+        }
 
         // Find the section closest to the center of the viewport
         if (distanceToCenter < smallestDistanceToCenter) {
           smallestDistanceToCenter = distanceToCenter
           closestSection = section
         }
+      }
+      if (scrollY > siteHeight - innerHeight - innerHeight / 2) {
+        closestSection = sections[sections.length - 1]
       }
       if (closestSection !== activeSection) {
         activeSection = closestSection
@@ -137,12 +155,14 @@ export default async function home(app) {
     }, 200)
 
     const scrollHandler = () => {
-      if (scrollY < 100) {
-        scrollTo(0, siteHeight - innerHeight - 100)
-      } else if (scrollY > siteHeight - innerHeight - 100) {
-        scrollTo(0, 100)
-      }
       throttledScrollHandler()
+      if (!isTouch) {
+        if (scrollY < 100) {
+          scrollTo(0, siteHeight - innerHeight - 100)
+        } else if (scrollY > siteHeight - innerHeight - 100) {
+          scrollTo(0, 100)
+        }
+      }
     }
 
     addEventListener('scroll', scrollHandler)
@@ -163,9 +183,11 @@ export default async function home(app) {
       }
       loop()
       const activateScroll = () => {
-        then = Date.now()
-        autoscroll.set(true)
-        loop()
+        if (!isTouch) {
+          then = Date.now()
+          autoscroll.set(true)
+          loop()
+        }
       }
       let autoscrollTimer = setTimeout(activateScroll, AUTOSCROLL_TIMEOUT)
       const stopScroll = () => {
