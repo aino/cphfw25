@@ -24,7 +24,7 @@
     <div class="images">
       {{#each images }}
       <div class="image">
-        <img {{img image }} />
+        <img {{img image }} sizes="50vw" />
         <div class="info">
           <h3>{{ title }}</h3>
           <p>{{ description }}</p>
@@ -47,9 +47,15 @@
     <div class="images">
       {{#each images }}
       <div class="image">
-        <img {{img image }} />
+        <img {{img image }} sizes="(max-width: 768px) 50vw, 16.6667vw" />
         {{#if hover }}
-        <img class="hover" {{img hover }} />
+        <img
+          class="hover"
+          {{img
+          hover
+          }}
+          sizes="(max-width: 768px) 50vw, 16.6667vw"
+        />
         {{/ if }}
       </div>
       {{/each }}
