@@ -159,7 +159,9 @@ export default async function buttons(app, getActiveSection) {
     const height = descriptionState.value?.content
       ? fakeDescription.getBoundingClientRect().height
       : 0
-    fakeDescription.style.width = width
+    if (prevWidth !== width) {
+      fakeDescription.style.width = width
+    }
     if (descriptionState.value?.content && prevHeight !== height) {
       container.parentNode.style.transform = `translate3d(-50%, ${
         height / -2
