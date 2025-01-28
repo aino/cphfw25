@@ -37,6 +37,7 @@ export default async function buttons(app, getActiveSection) {
   const description = container.nextElementSibling
   const descriptionText = description.children[0]
   const fakeDescription = description.cloneNode(true)
+
   style(fakeDescription, {
     position: 'absolute',
     opacity: 0,
@@ -150,18 +151,25 @@ export default async function buttons(app, getActiveSection) {
 
   renderSoundButton(false)
 
+  let prevHeight = 0
+  let prevWidth = 0
+
   function resizeDescription() {
     const width = `${container.getBoundingClientRect().width}px`
     const height = descriptionState.value?.content
       ? fakeDescription.getBoundingClientRect().height
       : 0
     fakeDescription.style.width = width
-    if (descriptionState.value?.content) {
+    if (descriptionState.value?.content && prevHeight !== height) {
       container.parentNode.style.transform = `translate3d(-50%, ${
         height / -2
       }px, 0)`
     }
-    style(description, { width, height })
+    if (prevHeight === height || prevWidth === width) {
+      style(description, { width, height })
+    }
+    prevWidth = width
+    prevHeight = height
   }
 
   const buttonsObserver = new ResizeObserver(resizeDescription)
