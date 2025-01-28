@@ -11,8 +11,9 @@ export default async function sidegallery(app) {
     const [images] = q('.images', sidegallery)
     const imageElements = q('.image', images)
     if (imageElements.length === 1) {
-      images.appendChild(imageElements[0].cloneNode(true))
-      images.appendChild(imageElements[0].cloneNode(true))
+      for (let i = 0; i < 3; i++) {
+        images.appendChild(imageElements[0].cloneNode(true))
+      }
     } else if (imageElements.length < 4) {
       for (const image of imageElements) {
         images.appendChild(image.cloneNode(true))
