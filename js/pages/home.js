@@ -49,6 +49,9 @@ export default async function home(app) {
   const [video] = q('video', hero)
   const loadingmessage = site.dataset.loadingmessage || 'Loading'
 
+  const { container, centerButtonState, destroy, descriptionState } =
+    await buttons(app, () => activeSection)
+
   animate({
     duration: 3300,
     onFrame: (n) => {
@@ -58,12 +61,9 @@ export default async function home(app) {
       fader.classList.add('out')
       loader.classList.add('fadeout')
       loader.classList.add('pause')
-      start()
+      start(container)
     },
   })
-
-  const { container, centerButtonState, destroy, descriptionState } =
-    await buttons(app, () => activeSection)
 
   destroyers.push(gallery(app))
   destroyers.push(sidegallery(app))
@@ -84,7 +84,7 @@ export default async function home(app) {
   })
   let activeSection = null
 
-  function start() {
+  function start(cont) {
     if (!isTouch) {
       const spacerTop = create('div', { class: 'spacer' })
       const spacerBottom = spacerTop.cloneNode(true)
@@ -98,11 +98,11 @@ export default async function home(app) {
       const y = (isMobile ? screen.availHeight : innerHeight) + 100
       scrollTo(0, y)
     }
-    container.classList.add('transition')
+    cont.classList.add('transition')
     requestAnimationFrame(() => {
-      container.classList.add('show')
+      cont.classList.add('show')
       requestAnimationFrame(() => {
-        container.classList.add('done')
+        cont.classList.add('done')
       })
     })
 

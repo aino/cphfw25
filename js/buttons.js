@@ -43,6 +43,7 @@ export default async function buttons(app, getActiveSection) {
     pointerEvents: 'none',
     overflow: 'visible',
     height: 'auto',
+    transition: 'none',
   })
 
   let timer = null
@@ -55,15 +56,17 @@ export default async function buttons(app, getActiveSection) {
       descriptionText.style.opacity = 0
       container.parentNode.style.transform = ''
     } else {
+      descriptionText.style.transitionDuration = '0.1s'
       descriptionText.style.opacity = 0
       fakeDescription.children[0].innerHTML = nextState.content
       const newHeight = fakeDescription.getBoundingClientRect().height
       description.style.height = `${newHeight}px`
       clearTimeout(timer)
       timer = setTimeout(() => {
+        descriptionText.style.transitionDuration = '0.4s'
         descriptionText.innerHTML = nextState.content
         descriptionText.style.opacity = 1
-      }, 200)
+      }, 400)
     }
     resizeDescription()
   })
