@@ -203,7 +203,7 @@ export default async function buttons(app, getActiveSection) {
 
   centerButton.addEventListener('click', () => {
     const activeSection = getActiveSection()
-    if (activeSection.classList.contains('footer')) {
+    if (activeSection && activeSection.classList.contains('footer')) {
       open('https://samsoe.com')
       return
     }
