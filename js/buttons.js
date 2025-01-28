@@ -57,7 +57,7 @@ export default async function buttons(app, getActiveSection) {
       fakeDescription.children[0].innerHTML = ''
       description.style.height = '0px'
       descriptionText.style.opacity = 0
-      bar.style.transform = `translate3d(-50%, 0, 0)`
+      bar.style.transform = `translate3d(0, 0, 0)`
       // container.parentNode.style.transform = ''
     } else {
       requestAnimationFrame(() => {
@@ -66,7 +66,7 @@ export default async function buttons(app, getActiveSection) {
         fakeDescription.children[0].innerHTML = nextState.content
         const newHeight = fakeDescription.getBoundingClientRect().height
         description.style.height = `${newHeight}px`
-        bar.style.transform = `translate3d(-50%, ${newHeight / -2}px, 0)`
+        bar.style.transform = `translate3d(0, ${newHeight / -2}px, 0)`
         clearTimeout(timer)
         timer = setTimeout(() => {
           descriptionText.style.transitionDuration = '0.4s'
@@ -89,6 +89,7 @@ export default async function buttons(app, getActiveSection) {
     totalWidth -= 4
     fakeDescription.style.width = `${totalWidth}px`
     description.style.width = `${totalWidth}px`
+    bar.style.left = innerWidth / 2 - totalWidth / 2 + 'px'
   }
 
   const centerButtonState = state('', (nextState) => {
