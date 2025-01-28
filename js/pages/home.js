@@ -50,7 +50,7 @@ export default async function home(app) {
   const loadingmessage = site.dataset.loadingmessage || 'Loading'
 
   const { container, centerButtonState, destroy, descriptionState } =
-    await buttons(app, () => activeSection)
+    await buttons(app, () => activeSection || sections[0])
 
   animate({
     duration: 3300,
