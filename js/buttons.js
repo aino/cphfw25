@@ -130,6 +130,7 @@ export default async function buttons(app, getActiveSection) {
     await document.fonts.ready
     centerButton.style.width = `${centerButton.offsetWidth}px`
     setTimeout(() => {
+      bar.style.transform = `translate3d(0, 0, 0)`
       setWidth()
     }, 400)
   } catch (e) {
