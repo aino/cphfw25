@@ -19,7 +19,7 @@ const SoundOff = `
     />
   </svg>`
 
-export default function buttons(app, getActiveSection) {
+export default async function buttons(app, getActiveSection) {
   const [container] = q('.buttons', app)
 
   const [infoButton, centerButton] = q('button', container)
@@ -82,8 +82,6 @@ export default function buttons(app, getActiveSection) {
     }, 200)
   })
 
-  centerButton.style.width = `${centerButton.offsetWidth}px`
-
   infoButton.addEventListener('click', () => {
     if (descriptionState.value?.type === 'info') {
       descriptionState.set(null)
@@ -102,6 +100,13 @@ export default function buttons(app, getActiveSection) {
   const music = new Audio(src)
   music.loop = true
   music.volume = 0
+
+  try {
+    await document.fonts.ready
+    centerButton.style.width = `${centerButton.offsetWidth}px`
+  } catch (e) {
+    console.warn('Fonts loaded event not fired', e)
+  }
 
   const renderSoundButton = (nextState) => {
     soundButton.innerHTML = `<span>Sound: ${nextState ? 'On' : 'Off'} </span>${

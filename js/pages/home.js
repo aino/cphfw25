@@ -62,10 +62,8 @@ export default async function home(app) {
     },
   })
 
-  const { container, centerButtonState, destroy, descriptionState } = buttons(
-    app,
-    () => activeSection
-  )
+  const { container, centerButtonState, destroy, descriptionState } =
+    await buttons(app, () => activeSection)
 
   destroyers.push(gallery(app))
   destroyers.push(sidegallery(app))
@@ -141,7 +139,7 @@ export default async function home(app) {
         activeSection = closestSection
         let title = activeSection.dataset.title
         if (!title && activeSection.classList.contains('footer')) {
-          title = 'Visit shop'
+          title = 'Homepage'
         }
         centerButtonState.set(title)
         const [desc] = q('.section-description', activeSection)

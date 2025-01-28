@@ -9,8 +9,14 @@ export default async function sidegallery(app) {
 
   sideGalleries.forEach((sidegallery, i) => {
     const [images] = q('.images', sidegallery)
-    for (const image of q('.image', images)) {
-      images.appendChild(image.cloneNode(true))
+    const imageElements = q('.image', images)
+    if (imageElements.length === 1) {
+      images.appendChild(imageElements[0].cloneNode(true))
+      images.appendChild(imageElements[0].cloneNode(true))
+    } else if (imageElements.length < 4) {
+      for (const image of imageElements) {
+        images.appendChild(image.cloneNode(true))
+      }
     }
     const autoscroll = AutoScroll({
       speed: 1,

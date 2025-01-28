@@ -371,7 +371,13 @@ html.js body.home {
         gap: 8rem;
         padding-left: 8rem;
         .image {
-          min-width: 80vw !important;
+          min-width: 60vw !important;
+          &:nth-child(odd) {
+            min-width: 80vw !important;
+          }
+          img {
+            min-width: 100%;
+          }
         }
       }
     }
@@ -413,7 +419,7 @@ html.js body.home {
           flex: 1 1 50% !important;
           padding-bottom: 75% !important;
           transform: none !important;
-          margin-bottom: 0 !important;
+          margin-bottom: -1px !important;
           img {
             width: 100%;
             &.hover {
