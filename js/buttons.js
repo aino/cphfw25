@@ -49,28 +49,47 @@ export default async function buttons(app, getActiveSection) {
 
   let timer = null
 
-  const descriptionState = state(null, (nextState, prevState) => {
+  const bar = container.parentElement
+
+  const descriptionStateHandler = (nextState, prevState) => {
     if (!nextState?.content && prevState) {
       descriptionText.innerHTML = ''
       fakeDescription.children[0].innerHTML = ''
       description.style.height = '0px'
       descriptionText.style.opacity = 0
-      container.parentNode.style.transform = ''
+      bar.style.transform = `translate3d(-50%, 0, 0)`
+      // container.parentNode.style.transform = ''
     } else {
-      descriptionText.style.transitionDuration = '0.1s'
-      descriptionText.style.opacity = 0
-      fakeDescription.children[0].innerHTML = nextState.content
-      const newHeight = fakeDescription.getBoundingClientRect().height
-      description.style.height = `${newHeight}px`
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        descriptionText.style.transitionDuration = '0.4s'
-        descriptionText.innerHTML = nextState.content
-        descriptionText.style.opacity = 1
-      }, 400)
+      requestAnimationFrame(() => {
+        descriptionText.style.transitionDuration = '0.1s'
+        descriptionText.style.opacity = 0
+        fakeDescription.children[0].innerHTML = nextState.content
+        const newHeight = fakeDescription.getBoundingClientRect().height
+        description.style.height = `${newHeight}px`
+        bar.style.transform = `translate3d(-50%, ${newHeight / -2}px, 0)`
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          descriptionText.style.transitionDuration = '0.4s'
+          descriptionText.innerHTML = nextState.content
+          descriptionText.style.opacity = 1
+        }, 400)
+      })
     }
-    resizeDescription()
-  })
+  }
+
+  const descriptionState = state(null, descriptionStateHandler)
+
+  const setWidth = () => {
+    let totalWidth = 0
+    for (const button of container.children) {
+      if (!button.isEqualNode(centerButton)) {
+        totalWidth += button.offsetWidth + 4
+      }
+    }
+    totalWidth -= 4
+    fakeDescription.style.width = `${totalWidth}px`
+    description.style.width = `${totalWidth}px`
+  }
 
   const centerButtonState = state('', (nextState) => {
     if (fakeButton.children[0].textContent === nextState) {
@@ -78,6 +97,7 @@ export default async function buttons(app, getActiveSection) {
     }
     centerButtonText.style.opacity = 0
     fakeButton.children[0].textContent = nextState
+    setWidth()
     const newWidth = fakeButton.getBoundingClientRect().width
     centerButton.style.width = `${newWidth}px`
     setTimeout(() => {
@@ -108,6 +128,9 @@ export default async function buttons(app, getActiveSection) {
   try {
     await document.fonts.ready
     centerButton.style.width = `${centerButton.offsetWidth}px`
+    setTimeout(() => {
+      setWidth()
+    }, 400)
   } catch (e) {
     console.warn('Fonts loaded event not fired', e)
   }
@@ -155,17 +178,13 @@ export default async function buttons(app, getActiveSection) {
   let prevWidth = 0
 
   function resizeDescription() {
+    return
     const width = `${container.getBoundingClientRect().width}px`
     const height = descriptionState.value?.content
       ? fakeDescription.getBoundingClientRect().height
       : 0
     if (prevWidth !== width) {
       fakeDescription.style.width = width
-    }
-    if (descriptionState.value?.content && prevHeight !== height) {
-      container.parentNode.style.transform = `translate3d(-50%, ${
-        height / -2
-      }px, 0)`
     }
     if (prevHeight === height || prevWidth === width) {
       style(description, { width, height })
