@@ -85,19 +85,19 @@ export default async function home(app) {
   let activeSection = null
 
   function start(cont) {
-    if (!isTouch) {
-      const spacerTop = create('div', { class: 'spacer' })
-      const spacerBottom = spacerTop.cloneNode(true)
-      site.appendChild(spacerBottom)
-      site.prepend(spacerTop)
-    }
+    // if (!isTouch) {
+    const spacerTop = create('div', { class: 'spacer' })
+    const spacerBottom = spacerTop.cloneNode(true)
+    site.appendChild(spacerBottom)
+    site.prepend(spacerTop)
+    // }
     style(site, {
       position: 'relative',
     })
-    if (!isTouch) {
-      const y = (isMobile ? screen.availHeight : innerHeight) + 100
-      scrollTo(0, y)
-    }
+    // if (!isTouch) {
+    const y = (isMobile ? screen.availHeight : innerHeight) + 100
+    scrollTo(0, y)
+    // }
     cont.classList.add('transition')
     requestAnimationFrame(() => {
       cont.classList.add('show')
@@ -154,13 +154,13 @@ export default async function home(app) {
 
     const scrollHandler = () => {
       throttledScrollHandler()
-      if (!isTouch) {
-        if (scrollY < 100) {
-          scrollTo(0, siteHeight - innerHeight - 100)
-        } else if (scrollY > siteHeight - innerHeight - 100) {
-          scrollTo(0, 100)
-        }
+      // if (!isTouch) {
+      if (scrollY < 100) {
+        scrollTo(0, siteHeight - innerHeight - 100)
+      } else if (scrollY > siteHeight - innerHeight - 100) {
+        scrollTo(0, 100)
       }
+      // }
     }
 
     addEventListener('scroll', scrollHandler)

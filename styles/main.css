@@ -15,7 +15,7 @@
   --n: 1;
 
   --white-rgb: 255, 255, 255;
-  --black-rgb: 24, 24, 24;
+  --black-rgb: 0, 0, 0;
   --lime-rgb: 193, 220, 67;
 
   --lime: rgb(var(--lime-rgb));
