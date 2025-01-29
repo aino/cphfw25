@@ -37,6 +37,7 @@ export default async function buttons(app, getActiveSection) {
   const description = container.nextElementSibling
   const descriptionText = description.children[0]
   const fakeDescription = description.cloneNode(true)
+  const infoText = descriptionText.innerHTML
 
   style(fakeDescription, {
     position: 'absolute',
@@ -113,8 +114,7 @@ export default async function buttons(app, getActiveSection) {
     } else {
       descriptionState.set({
         type: 'info',
-        content:
-          '<h2>About CPHFW</h2><p>With a nod to its Scandinavian heritage, Samsøe Samsøe is defined by a wearable aesthetic that combines the utilitarian ease of Copenhagen street style with a quintessentially Scandinavian spirit. Collections transcend trends, drawing on Denmark’s renowned design tradition to result in minimalist, affordable and accessible fashion.</p>',
+        content: infoText,
       })
     }
   })
