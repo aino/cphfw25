@@ -95,7 +95,7 @@ export default async function home(app) {
       position: 'relative',
     })
     // if (!isTouch) {
-    const y = (isMobile ? screen.availHeight : innerHeight) + 100
+    const y = spacerTop.getBoundingClientRect().height
     scrollTo(0, y)
     // }
     cont.classList.add('transition')

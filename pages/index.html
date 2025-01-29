@@ -5,7 +5,9 @@
 <div class="barcontainer">
   <div class="buttons">
     <button class="info"><span>Samsøe Samsøe </span>CPHFW’25</button>
-    <button class="center"><span>{{ name }}</span></button>
+    <button class="center">
+      <span>{{#with sections.[0]}} {{title}} {{else}} {{name}} {{/with}}</span>
+    </button>
   </div>
   <div class="description">
     <div class="description-text">{{{ description }}}</div>
